@@ -4,7 +4,7 @@ KHViewControllerHierarchy
 ### What does it do?
 Exposes some simple methods for determing which UIViewController is currently at the 'top' of the view controller stack.
 
-Provides an interface for showing a view that can trigger an alert view containing the current 'top' view controller's hierarchy.
+Provides an interface for showing a view (by default a large, highly transparent grey circle) that triggers an alert view with the current 'top' view controller's hierarchy.
 
 ![alt text](https://github.com/kenthumphries/KHViewControllerHierarchy/raw/master/SampleScreenshot.png "Sample Screenshot")
 
