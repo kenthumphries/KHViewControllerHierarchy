@@ -58,10 +58,15 @@ static NSString *const kHierarchyWindowOriginYKey = @"hierarchyWindowOriginY";
     return CGPointMake(originX.intValue, originY.intValue);
 }
 
-- (void)enableViewControllerHierarchyButton:(BOOL)enableButton;
+- (void)setViewControllerHierarchyButtonEnabled:(BOOL)buttonEnabled
 {
     // Simply show or hide the hierarchyWindow. It's lazily loaded, so will be added if not already.
-    self.hierarchyWindow.hidden = !enableButton;
+    self.hierarchyWindow.hidden = !buttonEnabled;
+}
+
+- (BOOL)viewControllerHierarchyButtonEnabled
+{
+    return !self.hierarchyWindow.hidden;
 }
 
 - (void)handlePanGesture:(UIPanGestureRecognizer*)panGestureRecognizer

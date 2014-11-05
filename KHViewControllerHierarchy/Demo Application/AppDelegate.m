@@ -14,7 +14,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     
-    [self.window enableViewControllerHierarchyButton:YES];
+    self.window.viewControllerHierarchyButtonEnabled = YES;
     
     return YES;
 }

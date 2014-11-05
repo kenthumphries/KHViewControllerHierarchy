@@ -10,14 +10,21 @@
 
 /**
  *  Category that exposes a 'button' (a UIWindow with gesture recognizers) for displaying current view controller hierarchy.
+ *
+ *   Uses set & getter so that viewControllerHierarchyButtonEnabled can be accessed like a property if desired.
  */
 @interface UIWindow (KHViewControllerHierarchy)
 
 /**
  *  Enable a 'button' that when touched will show hierarchy of the currently visible view controller.
  *
- *  @param showHierarchy BOOL indicating whether 'button' should be enabled
+ *  @param buttonEnabled BOOL indicating whether 'button' should be enabled
  */
-- (void)enableViewControllerHierarchyButton:(BOOL)enableButton;
+- (void)setViewControllerHierarchyButtonEnabled:(BOOL)buttonEnabled;
+
+/**
+ *  Getter to indicate whether the hierarchy 'button' is currently visible.
+ */
+- (BOOL)viewControllerHierarchyButtonEnabled;
 
 @end
