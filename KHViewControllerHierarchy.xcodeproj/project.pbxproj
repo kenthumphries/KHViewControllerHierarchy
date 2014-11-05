@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3719F4691A09861800C1A8E2 /* AppDelegate+KHViewControllerHierarchy.m in Sources */ = {isa = PBXBuildFile; fileRef = 3719F4661A09861800C1A8E2 /* AppDelegate+KHViewControllerHierarchy.m */; };
+		3719F4691A09861800C1A8E2 /* UIWindow+KHViewControllerHierarchy.m in Sources */ = {isa = PBXBuildFile; fileRef = 3719F4661A09861800C1A8E2 /* UIWindow+KHViewControllerHierarchy.m */; };
 		3719F46A1A09861800C1A8E2 /* KHViewControllerHierarchyUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 3719F4681A09861800C1A8E2 /* KHViewControllerHierarchyUtilities.m */; };
 		3719F4731A09974F00C1A8E2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3719F46D1A09974F00C1A8E2 /* AppDelegate.m */; };
 		3719F4751A09974F00C1A8E2 /* MySubSubViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3719F4701A09974F00C1A8E2 /* MySubSubViewController.m */; };
@@ -30,8 +30,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		3719F4651A09861800C1A8E2 /* AppDelegate+KHViewControllerHierarchy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+KHViewControllerHierarchy.h"; sourceTree = "<group>"; };
-		3719F4661A09861800C1A8E2 /* AppDelegate+KHViewControllerHierarchy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+KHViewControllerHierarchy.m"; sourceTree = "<group>"; };
+		3719F4651A09861800C1A8E2 /* UIWindow+KHViewControllerHierarchy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIWindow+KHViewControllerHierarchy.h"; sourceTree = "<group>"; };
+		3719F4661A09861800C1A8E2 /* UIWindow+KHViewControllerHierarchy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWindow+KHViewControllerHierarchy.m"; sourceTree = "<group>"; };
 		3719F4671A09861800C1A8E2 /* KHViewControllerHierarchyUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KHViewControllerHierarchyUtilities.h; sourceTree = "<group>"; };
 		3719F4681A09861800C1A8E2 /* KHViewControllerHierarchyUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KHViewControllerHierarchyUtilities.m; sourceTree = "<group>"; };
 		3719F46C1A09974F00C1A8E2 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -73,8 +73,8 @@
 		3719F4641A09861800C1A8E2 /* KHViewControllerHierarchy */ = {
 			isa = PBXGroup;
 			children = (
-				3719F4651A09861800C1A8E2 /* AppDelegate+KHViewControllerHierarchy.h */,
-				3719F4661A09861800C1A8E2 /* AppDelegate+KHViewControllerHierarchy.m */,
+				3719F4651A09861800C1A8E2 /* UIWindow+KHViewControllerHierarchy.h */,
+				3719F4661A09861800C1A8E2 /* UIWindow+KHViewControllerHierarchy.m */,
 				3719F4671A09861800C1A8E2 /* KHViewControllerHierarchyUtilities.h */,
 				3719F4681A09861800C1A8E2 /* KHViewControllerHierarchyUtilities.m */,
 			);
@@ -252,7 +252,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3719F4691A09861800C1A8E2 /* AppDelegate+KHViewControllerHierarchy.m in Sources */,
+				3719F4691A09861800C1A8E2 /* UIWindow+KHViewControllerHierarchy.m in Sources */,
 				3719F46A1A09861800C1A8E2 /* KHViewControllerHierarchyUtilities.m in Sources */,
 				3719F4761A09974F00C1A8E2 /* MySubViewController.m in Sources */,
 				3719F4751A09974F00C1A8E2 /* MySubSubViewController.m in Sources */,

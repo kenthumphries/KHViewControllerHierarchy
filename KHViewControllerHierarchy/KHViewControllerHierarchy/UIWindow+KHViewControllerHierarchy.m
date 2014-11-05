@@ -1,33 +1,22 @@
 //
-//  AppDelegate+KHViewControllerHierarchy.m
+//  UIWindow+KHViewControllerHierarchy.m
 //  KHViewControllerHierarchy
 //
 //  Created by Kent Humphries on 4/11/2014.
 //  Copyright (c) 2014 Kent Humphries. All rights reserved.
 //
 
-#import "AppDelegate+KHViewControllerHierarchy.h"
+#import "UIWindow+KHViewControllerHierarchy.h"
 #import "KHViewControllerHierarchyUtilities.h"
 #import <objc/runtime.h>
 
-static int const kHierarchyWindowDiameter = 150;
+static int const kHierarchyWindowDiameter = 100;
 
-static NSString *const kPrimaryWindowKey          = @"primaryWindow";
 static NSString *const kHierarchyWindowKey        = @"hierarchyWindow";
 static NSString *const kHierarchyWindowOriginXKey = @"hierarchyWindowOriginX";
 static NSString *const kHierarchyWindowOriginYKey = @"hierarchyWindowOriginY";
 
-@implementation AppDelegate (KHViewControllerHierarchy)
-
-- (UIWindow*)primaryWindow
-{
-    return objc_getAssociatedObject(self, (__bridge const void *)(kPrimaryWindowKey));
-}
-
-- (void)assignPrimaryWindow:(UIWindow*)window
-{
-    objc_setAssociatedObject(self, (__bridge const void *)(kPrimaryWindowKey), window, OBJC_ASSOCIATION_ASSIGN); // AppDelegate must retain the primaryWindow
-}
+@implementation UIWindow (KHViewControllerHierarchy)
 
 - (UIWindow*)hierarchyWindow
 {
@@ -39,7 +28,7 @@ static NSString *const kHierarchyWindowOriginYKey = @"hierarchyWindowOriginY";
                                                                      kHierarchyWindowDiameter,
                                                                      kHierarchyWindowDiameter)];
         hierarchyWindow.layer.cornerRadius = kHierarchyWindowDiameter * 0.5;
-        hierarchyWindow.windowLevel = UIWindowLevelAlert - 1;
+        hierarchyWindow.windowLevel = self.windowLevel + 1;
         hierarchyWindow.backgroundColor = [UIColor grayColor];
         hierarchyWindow.alpha = 0.2;
         hierarchyWindow.rootViewController = [UIViewController new]; // Avoid compiler warning - a window _should_ have a rootViewController
@@ -69,15 +58,10 @@ static NSString *const kHierarchyWindowOriginYKey = @"hierarchyWindowOriginY";
     return CGPointMake(originX.intValue, originY.intValue);
 }
 
-- (void)enableViewControllerHierarchyButton:(BOOL)enableButton forPrimaryWindow:(UIWindow*)window;
+- (void)enableViewControllerHierarchyButton:(BOOL)enableButton;
 {
-    [self assignPrimaryWindow:window];
-    [self showHierarchyWindow:enableButton];
-}
-
-- (void)showHierarchyWindow:(BOOL)showHierarchyWindow
-{
-    self.hierarchyWindow.hidden = !showHierarchyWindow;
+    // Simply show or hide the hierarchyWindow. It's lazily loaded, so will be added if not already.
+    self.hierarchyWindow.hidden = !enableButton;
 }
 
 - (void)handlePanGesture:(UIPanGestureRecognizer*)panGestureRecognizer
@@ -93,23 +77,19 @@ static NSString *const kHierarchyWindowOriginYKey = @"hierarchyWindowOriginY";
     }
     else if (panGestureRecognizer.state == UIGestureRecognizerStateChanged)
     {
-        // Don't allow translation of window if primaryWindow reference has been lost
-        if (self.primaryWindow)
-        {
-            // Update the frame of the window given origin + offset
-            CGPoint touch = [panGestureRecognizer translationInView:self.primaryWindow];
-            
-            self.hierarchyWindow.frame = CGRectMake(self.hierarchyWindowOrigin.x + touch.x,
-                                                    self.hierarchyWindowOrigin.y + touch.y,
-                                                    self.hierarchyWindow.frame.size.width,
-                                                    self.hierarchyWindow.frame.size.height);
-        }
+        // Update the frame of the window given origin + offset
+        CGPoint touch = [panGestureRecognizer translationInView:self];
+        
+        self.hierarchyWindow.frame = CGRectMake(self.hierarchyWindowOrigin.x + touch.x,
+                                                self.hierarchyWindowOrigin.y + touch.y,
+                                                self.hierarchyWindow.frame.size.width,
+                                                self.hierarchyWindow.frame.size.height);
     }
 }
 
 - (void)showHierarchyView
 {
-    [KHViewControllerHierarchyUtilities showAlertViewWithHierarchyForVisibleViewControllerOfWindow:self.window];
+    [KHViewControllerHierarchyUtilities showAlertViewWithHierarchyForVisibleViewControllerOfWindow:self];
 }
 
 @end

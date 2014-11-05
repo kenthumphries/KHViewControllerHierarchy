@@ -7,14 +7,14 @@
 //
 
 #import "AppDelegate.h"
-#import "AppDelegate+KHViewControllerHierarchy.h"
+#import "UIWindow+KHViewControllerHierarchy.h"
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     
-    [self enableViewControllerHierarchyButton:YES forPrimaryWindow:self.window];
+    [self.window enableViewControllerHierarchyButton:YES];
     
     return YES;
 }
