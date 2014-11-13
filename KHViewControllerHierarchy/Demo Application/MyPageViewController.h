@@ -10,4 +10,13 @@
 
 @interface MyPageViewController : UIPageViewController
 
+/**
+ *  Convenience initialiser to initialise with an array of UIViewControllers
+ *
+ *  @param viewControllers Array of UIViewControllers to display in this UIPageViewController
+ *
+ *  @return Newly allocated instance
+ */
+- (instancetype)initWithViewControllers:(NSArray*)viewControllers;
+
 @end

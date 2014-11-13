@@ -10,6 +10,7 @@
 #import <XCTest/XCTest.h>
 #import "MySubViewController.h"
 #import "MySubSubViewController.h"
+#import "MyPageViewController.h"
 #import "KHViewControllerHierarchyUtilities.h"
 
 /**
@@ -72,7 +73,6 @@
     hierarchy = [KHViewControllerHierarchyUtilities objectHierarchyForViewController:topViewController withCustomHierarchies:nil];
     expected  = @"MySubViewController-> UIViewController";
     XCTAssert([hierarchy isEqualToString:expected], @"\"%@\" != \"%@\"", hierarchy, expected);
-
 }
 
 - (UITabBarController*)tabBarControllerHierarchyWithViewController:(NSArray*)viewControllers
@@ -136,6 +136,7 @@
     return parentViewController;
 }
 
+
 - (void)testMixedViewControllerHierarchy {
     // ModalViewController containing a navigation controller containing a tab bar controller containing two navigation controllers, one with child container views, one without
     
@@ -149,15 +150,15 @@
     
     // Ensure that 'MySubViewController' is 'top' of navigationControllerWithNoChild stack
     UIViewController *navigationControllerWithNoChild = [self navigationControllerHierarchyWithViewControllers:@[[MySubViewController new]]];
-
+    
     UITabBarController *tabBarController = [self tabBarControllerHierarchyWithViewController:@[navigationControllerWithNoChild, navigationControllerWithChild]];
-
+    
     // Ensure that tabBarController is in navigationControllerWithTabBar stack
     UINavigationController *navigationControllerWithTabBar = [self navigationControllerHierarchyWithViewControllers:@[tabBarController]];
     
     // Ensure that navigationControllerWithTabBar is in presentingViewController stack
     UIViewController *presentingViewController = [self modalViewControllerHierarchyOnViewController:[UIApplication sharedApplication].keyWindow.rootViewController withViewController:navigationControllerWithTabBar];
-
+    
     
     // Ensure that navigationControllerWithChild is selected in tabBarController stack
     tabBarController.selectedIndex = 1;
@@ -176,6 +177,58 @@
     hierarchy = [KHViewControllerHierarchyUtilities objectHierarchyForViewController:topViewController withCustomHierarchies:nil];
     expected  = @"MySubViewController-> UIViewController";
     XCTAssert([hierarchy isEqualToString:expected], @"\"%@\" != \"%@\"", hierarchy, expected);
+}
+
+- (void)testPageViewControllerHierarchy
+{
+    // Create a MyPageViewController and test objectHierarchy
+    NSArray *viewControllers = @[[MySubViewController new], [MySubSubViewController new], [MySubViewController new]];
+    MyPageViewController *pageViewController = [self pageViewControllerHierarchyWithViewControllers:viewControllers];
+    
+    // Force the pageViewController to load it's view
+    [pageViewController.view setNeedsDisplay];
+    
+    UIViewController *topViewController = [KHViewControllerHierarchyUtilities ascendStackForViewController:pageViewController
+                                                                                     withCustomHierarchies:nil];
+    
+    NSString *hierarchy = [KHViewControllerHierarchyUtilities objectHierarchyForViewController:topViewController
+                                                                         withCustomHierarchies:nil];
+    NSString *expected  = @"MySubViewController-> UIViewController";
+    XCTAssert([hierarchy isEqualToString:expected], @"\"%@\" != \"%@\"", hierarchy, expected);
+    
+    // Select the next page
+    [pageViewController setViewControllers:@[viewControllers[1]]
+                                 direction:UIPageViewControllerNavigationDirectionForward
+                                  animated:NO
+                                completion:nil];
+    
+    topViewController = [KHViewControllerHierarchyUtilities ascendStackForViewController:pageViewController
+                                                                   withCustomHierarchies:nil];
+    
+    hierarchy = [KHViewControllerHierarchyUtilities objectHierarchyForViewController:topViewController
+                                                               withCustomHierarchies:nil];
+    expected  = @"MySubSubViewController-> MySubViewController-> UIViewController";
+    XCTAssert([hierarchy isEqualToString:expected], @"\"%@\" != \"%@\"", hierarchy, expected);
+    
+    // Select the last page
+    [pageViewController setViewControllers:@[viewControllers.lastObject]
+                                 direction:UIPageViewControllerNavigationDirectionForward
+                                  animated:NO
+                                completion:nil];
+    
+    topViewController = [KHViewControllerHierarchyUtilities ascendStackForViewController:pageViewController
+                                                                   withCustomHierarchies:nil];
+    
+    hierarchy = [KHViewControllerHierarchyUtilities objectHierarchyForViewController:topViewController
+                                                               withCustomHierarchies:nil];
+    expected  = @"MySubViewController-> UIViewController";
+    XCTAssert([hierarchy isEqualToString:expected], @"\"%@\" != \"%@\"", hierarchy, expected);
+}
+
+- (MyPageViewController*)pageViewControllerHierarchyWithViewControllers:(NSArray*)viewControllers
+{
+    MyPageViewController *pageViewController = [[MyPageViewController alloc] initWithViewControllers:viewControllers];
+    return pageViewController;
 }
 
 @end

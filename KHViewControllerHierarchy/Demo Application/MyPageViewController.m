@@ -19,20 +19,38 @@
 
 @implementation MyPageViewController
 
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self)
+    {
+        self.dataSourceViewControllers = @[[MySubViewController new], [MySubSubViewController new]];
+    }
+    return self;
+}
+
+- (instancetype)initWithViewControllers:(NSArray*)viewControllers
+{
+    self = [super initWithTransitionStyle:UIPageViewControllerTransitionStylePageCurl
+                    navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal
+                                  options:nil];
+    if (self)
+    {
+        self.dataSourceViewControllers = viewControllers;
+    }
+    return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     self.dataSource = self;
     self.delegate   = self;
 
-    self.dataSourceViewControllers = @[[MySubViewController new], [MySubSubViewController new]];
-
-    // Only set the viewControllers here where they will correspond to correct spine location returned (Mid for 2 VCs)
     [self setViewControllers:@[self.dataSourceViewControllers[0]]
                    direction:UIPageViewControllerNavigationDirectionForward
                     animated:NO
                   completion:nil];
-    
     
     self.view.backgroundColor = [UIColor purpleColor];
 }
@@ -41,13 +59,27 @@
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController
 {
-    self.currentPage = [self.dataSourceViewControllers indexOfObject:viewController] == 0 ? 1 : 0;
+    if (self.currentPage > 0)
+    {
+        self.currentPage--;
+    }
+    else
+    {
+        return nil; // Is no previous page
+    }
     return self.dataSourceViewControllers[self.currentPage];
 }
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController
 {
-    self.currentPage = [self.dataSourceViewControllers indexOfObject:viewController] == 0 ? 1 : 0;
+    if (self.currentPage < self.viewControllers.count)
+    {
+        self.currentPage++;
+    }
+    else
+    {
+        return nil;
+    }
     return self.dataSourceViewControllers[self.currentPage];
 }
 
@@ -66,7 +98,6 @@
 
 - (UIPageViewControllerSpineLocation)pageViewController:(UIPageViewController*)pageViewController spineLocationForInterfaceOrientation:(UIInterfaceOrientation)orientation
 {
-
     return UIPageViewControllerSpineLocationMin;
 }
 
