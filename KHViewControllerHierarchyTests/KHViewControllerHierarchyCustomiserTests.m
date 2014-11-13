@@ -95,4 +95,39 @@
     XCTAssertEqual([customiser ascendStackBlockForClass:MySubViewController.class], mySubViewControllerBlock, @"Expect mySubViewControllerBlock back");
 }
 
+- (void)testRegistrationReorder
+{
+    // 1) Register superclass before subclass and ensure superclass block is returned for sub & superclass
+    
+    KHViewControllerHierarchyCustomiser *customiser = [KHViewControllerHierarchyCustomiser new];
+    
+    KHViewControllerHierarchyAscendStackBlock mySubViewControllerBlock = ^UIViewController *(UIViewController *viewController) {
+        return [MySubViewController new];
+    };
+    KHViewControllerHierarchyAscendStackBlock mySubSubViewControllerBlock = ^UIViewController *(UIViewController *viewController) {
+        return [MySubSubViewController new];
+    };
+    
+    [customiser registerClass:MySubViewController.class
+         withAscendStackBlock:mySubViewControllerBlock];
+    [customiser registerClass:MySubSubViewController.class
+         withAscendStackBlock:mySubSubViewControllerBlock];
+    
+    // Should get back the mySubViewControllerBlock for MySubViewController
+    XCTAssertEqual([customiser ascendStackBlockForClass:MySubViewController.class], mySubViewControllerBlock, @"Expect mySubViewControllerBlock back");
+    
+    // Should get back the mySubViewControllerBlock for MySubSubViewController as it's a subclass
+    XCTAssertEqual([customiser ascendStackBlockForClass:MySubSubViewController.class], mySubViewControllerBlock, @"Expect mySubViewControllerBlock back as it's a subclass of MySubSubViewController which was registered first");
+    
+    // 2) Re-register mySubViewController so it's moved to the end and MySubSubControllerBlock is returned for subclass
+    [customiser registerClass:MySubViewController.class
+         withAscendStackBlock:mySubViewControllerBlock];
+
+    // Should get back the mySubViewControllerBlock for MySubViewController
+    XCTAssertEqual([customiser ascendStackBlockForClass:MySubViewController.class], mySubViewControllerBlock, @"Expect mySubViewControllerBlock back");
+    
+    // Should get back the mySubSubViewControllerBlock for MySubSubViewController as it's registered before MySubViewController
+    XCTAssertEqual([customiser ascendStackBlockForClass:MySubSubViewController.class], mySubSubViewControllerBlock, @"Expect mySubSubViewControllerBlock back");
+}
+
 @end

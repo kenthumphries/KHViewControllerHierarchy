@@ -39,6 +39,11 @@
 {
     if (class && ascendStack)
     {
+        // If class is already registered, shift it to the end of registeredClasses
+        if ([self.registeredClasses containsObject:class])
+        {
+            [self.registeredClasses removeObject:class];
+        }
         self.customBlocks[class.description] = ascendStack;
         [self.registeredClasses addObject:class];
     }
