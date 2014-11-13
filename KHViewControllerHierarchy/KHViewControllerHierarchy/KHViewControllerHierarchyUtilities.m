@@ -58,7 +58,7 @@
 {
     if (!pathString.length)
     {
-        [pathString appendFormat:@"%@",viewController.class.description];
+        [pathString appendFormat:@"UIWindow (has rootViewController) %@",viewController.class.description];
     }
     
     UIViewController *topOfStack = viewController;
@@ -66,7 +66,7 @@
     KHViewControllerHierarchyAscendStackBlock customBlock = [customiser ascendStackBlockForClass:viewController.class];
     if (customBlock)
     {
-        topOfStack = customBlock(viewController);
+        topOfStack = customBlock(viewController, pathString);
     }
     else if ([viewController isKindOfClass:UINavigationController.class])
     {

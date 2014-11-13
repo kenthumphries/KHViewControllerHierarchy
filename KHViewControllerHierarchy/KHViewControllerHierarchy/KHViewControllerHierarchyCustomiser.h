@@ -12,10 +12,11 @@
  *  Block that is given a UIViewController and returns it's 'top' UIViewController
  *
  *  @param viewController viewController to ascend to 'top'
+ *  @param pathString NSMutableString which shows relation from viewController to 'top' UIViewController
  *
  *  @return UIViewController at 'top' of viewController's direct hierarchy
  */
-typedef UIViewController *(^KHViewControllerHierarchyAscendStackBlock)(UIViewController *viewController);
+typedef UIViewController *(^KHViewControllerHierarchyAscendStackBlock)(UIViewController *viewController, NSMutableString *pathString);
 
 /**
  *  Configuration class used to customise actions in KHViewControllerHierarchyUtilities

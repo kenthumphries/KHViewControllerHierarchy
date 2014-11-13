@@ -24,7 +24,7 @@
     // Should get back a nil block - haven't yet registered a class
     XCTAssertNil([customiser ascendStackBlockForClass:MySubViewController.class]);
     
-    [customiser registerClass:MySubViewController.class withAscendStackBlock:^UIViewController *(UIViewController *viewController) {
+    [customiser registerClass:MySubViewController.class withAscendStackBlock:^UIViewController *(UIViewController *viewController, NSMutableString *pathString) {
         return [MySubViewController new];
     }];
     
@@ -48,10 +48,10 @@
     
     KHViewControllerHierarchyCustomiser *customiser = [KHViewControllerHierarchyCustomiser new];
     
-    KHViewControllerHierarchyAscendStackBlock mySubViewControllerBlock = ^UIViewController *(UIViewController *viewController) {
+    KHViewControllerHierarchyAscendStackBlock mySubViewControllerBlock = ^UIViewController *(UIViewController *viewController, NSMutableString *pathString) {
         return [MySubViewController new];
     };
-    KHViewControllerHierarchyAscendStackBlock mySubSubViewControllerBlock = ^UIViewController *(UIViewController *viewController) {
+    KHViewControllerHierarchyAscendStackBlock mySubSubViewControllerBlock = ^UIViewController *(UIViewController *viewController, NSMutableString *pathString) {
         return [MySubSubViewController new];
     };
 
@@ -101,10 +101,10 @@
     
     KHViewControllerHierarchyCustomiser *customiser = [KHViewControllerHierarchyCustomiser new];
     
-    KHViewControllerHierarchyAscendStackBlock mySubViewControllerBlock = ^UIViewController *(UIViewController *viewController) {
+    KHViewControllerHierarchyAscendStackBlock mySubViewControllerBlock = ^UIViewController *(UIViewController *viewController, NSMutableString *pathString) {
         return [MySubViewController new];
     };
-    KHViewControllerHierarchyAscendStackBlock mySubSubViewControllerBlock = ^UIViewController *(UIViewController *viewController) {
+    KHViewControllerHierarchyAscendStackBlock mySubSubViewControllerBlock = ^UIViewController *(UIViewController *viewController, NSMutableString *pathString) {
         return [MySubSubViewController new];
     };
     
