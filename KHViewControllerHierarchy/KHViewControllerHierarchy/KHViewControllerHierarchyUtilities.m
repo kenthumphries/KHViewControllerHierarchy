@@ -14,9 +14,16 @@
                                              withCustomHierarchies:(KHViewControllerHierarchyCustomiser*)customiser
 {
     // Determine the top of the ViewController hierarchy
-    UIViewController *visibleViewController = [self ascendStackForViewController:window.rootViewController withCustomHierarchies:customiser];
+    NSMutableString *pathString = [NSMutableString new];
+    UIViewController *visibleViewController = [self ascendStackForViewController:window.rootViewController withPathString:pathString withCustomHierarchies:customiser];
     
     NSString *viewControllerHierarchy = [self objectHierarchyForViewController:visibleViewController withCustomHierarchies:customiser];
+    
+    [[[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Path to %s", object_getClassName(visibleViewController)]
+                                message:pathString
+                               delegate:nil
+                      cancelButtonTitle:@"OK"
+                      otherButtonTitles:nil] show];
     
     [[[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"%s", object_getClassName(visibleViewController)]
                                 message:viewControllerHierarchy
@@ -46,8 +53,14 @@
 }
 
 + (UIViewController *)ascendStackForViewController:(UIViewController *)viewController
+                                    withPathString:(NSMutableString *)pathString
                              withCustomHierarchies:(KHViewControllerHierarchyCustomiser*)customiser
 {
+    if (!pathString.length)
+    {
+        [pathString appendFormat:@"%@",viewController.class.description];
+    }
+    
     UIViewController *topOfStack = viewController;
 
     KHViewControllerHierarchyAscendStackBlock customBlock = [customiser ascendStackBlockForClass:viewController.class];
@@ -57,23 +70,25 @@
     }
     else if ([viewController isKindOfClass:UINavigationController.class])
     {
-        topOfStack = [self ascendStackForNavigationController:(UINavigationController*)viewController];
+        topOfStack = [self ascendStackForNavigationController:(UINavigationController*)viewController withPathString:pathString];
     }
     else if ([viewController isKindOfClass:UITabBarController.class])
     {
-        topOfStack = [self ascendStackForTabBarController:(UITabBarController*)viewController];
+        topOfStack = [self ascendStackForTabBarController:(UITabBarController*)viewController withPathString:pathString];
     }
     else if ([viewController isKindOfClass:UIPageViewController.class])
     {
-        topOfStack = [self ascendStackForPageViewController:(UIPageViewController*)viewController];
+        topOfStack = [self ascendStackForPageViewController:(UIPageViewController*)viewController withPathString:pathString];
     }
     else if ([viewController presentedViewController])
     {
-        topOfStack = [self ascendStackForViewController:[viewController presentedViewController] withCustomHierarchies:customiser];
+        UIViewController *topViewController = [viewController presentedViewController];
+        [pathString appendFormat:@" (presenting) %@", topViewController.class.description];
+        topOfStack = [self ascendStackForViewController:topViewController withPathString:pathString withCustomHierarchies:customiser];
     }
     else if (viewController.childViewControllers.count)
     {
-        topOfStack = [self ascendStackForChildrenOfViewController:viewController];
+        topOfStack = [self ascendStackForChildrenOfViewController:viewController withPathString:pathString];
     }
     
     if (topOfStack == viewController)
@@ -81,49 +96,54 @@
         return topOfStack;
     }
     
-    return [self ascendStackForViewController:topOfStack withCustomHierarchies:customiser];
+    return [self ascendStackForViewController:topOfStack withPathString:pathString withCustomHierarchies:customiser];
 }
 
-+ (UIViewController*)ascendStackForNavigationController:(UINavigationController*)navigationController
++ (UIViewController*)ascendStackForNavigationController:(UINavigationController*)navigationController withPathString:(NSMutableString *)pathString
 {
-    return [navigationController topViewController];
+    UIViewController *topViewController = [navigationController topViewController];
+    [pathString appendFormat:@" (has topViewController) %@", topViewController.class.description];
+    return topViewController;
 }
 
-+ (UIViewController *)ascendStackForTabBarController:(UITabBarController*)tabBarController
++ (UIViewController *)ascendStackForTabBarController:(UITabBarController*)tabBarController withPathString:(NSMutableString *)pathString
 {
-    return [tabBarController selectedViewController];
+    UIViewController *topViewController = [tabBarController selectedViewController];
+    [pathString appendFormat:@" (has selectedViewController) %@", topViewController.class.description];
+    return topViewController;
 }
 
-+ (UIViewController *)ascendStackForChildrenOfViewController:(UIViewController *)viewController
++ (UIViewController *)ascendStackForChildrenOfViewController:(UIViewController *)viewController withPathString:(NSMutableString *)pathString
 {
     for (UIViewController *childViewController in viewController.childViewControllers)
     {
         if ([viewController.view.subviews containsObject:childViewController.view])
         {
+            [pathString appendFormat:@" (has visible childViewController) %@", childViewController.class.description];
             return childViewController;
         }
         else if (childViewController.childViewControllers.count)
         {
-            return [self ascendStackForChildrenOfViewController:childViewController];
+            return [self ascendStackForChildrenOfViewController:childViewController withPathString:pathString];
         }
     }
     return viewController;
 }
 
-+ (UIViewController *)ascendStackForPageViewController:(UIPageViewController *)pageViewController
++ (UIViewController *)ascendStackForPageViewController:(UIPageViewController *)pageViewController withPathString:(NSMutableString *)pathString
 {
+    UIViewController *topViewController = pageViewController.viewControllers[0]; // Default
     if ([pageViewController.dataSource respondsToSelector:@selector(presentationIndexForPageViewController:)])
     {
         NSInteger selectedIndex = [pageViewController.dataSource presentationIndexForPageViewController:pageViewController];
         if (selectedIndex < pageViewController.viewControllers.count)
         {
-            return pageViewController.viewControllers[selectedIndex];
+            topViewController = pageViewController.viewControllers[selectedIndex];
         }
     }
     
-    // Otherwise, just return the first pageViewController
-    return pageViewController.viewControllers[0];
+    [pathString appendFormat:@" (showing) %@", topViewController.class.description];
+    return topViewController;
 }
-
 
 @end
