@@ -7,16 +7,29 @@
 //
 
 #import "UIWindow+KHViewControllerHierarchy.h"
+#import "KHViewControllerHierarchyCustomiser.h"
 #import "KHViewControllerHierarchyUtilities.h"
 #import <objc/runtime.h>
 
 static int const kHierarchyWindowDiameter = 100;
 
+static NSString *const kCustomiserKey               = @"customiser";
 static NSString *const kHierarchyWindowKey        = @"hierarchyWindow";
 static NSString *const kHierarchyWindowOriginXKey = @"hierarchyWindowOriginX";
 static NSString *const kHierarchyWindowOriginYKey = @"hierarchyWindowOriginY";
 
 @implementation UIWindow (KHViewControllerHierarchy)
+
+- (KHViewControllerHierarchyCustomiser*)viewControllerHierarchyCustomiser
+{
+    KHViewControllerHierarchyCustomiser *customiser = objc_getAssociatedObject(self, (__bridge const void *)(kCustomiserKey));
+    if (!customiser)
+    {
+        customiser = [KHViewControllerHierarchyCustomiser new];
+        objc_setAssociatedObject(self, (__bridge const void *)(kCustomiserKey), customiser, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    }
+    return customiser;
+}
 
 - (UIWindow*)hierarchyWindow
 {
@@ -94,7 +107,7 @@ static NSString *const kHierarchyWindowOriginYKey = @"hierarchyWindowOriginY";
 
 - (void)showHierarchyView
 {
-    [KHViewControllerHierarchyUtilities showAlertViewWithHierarchyForVisibleViewControllerOfWindow:self];
+    [KHViewControllerHierarchyUtilities showAlertViewWithHierarchyForVisibleViewControllerOfWindow:self withCustomHierarchies:self.viewControllerHierarchyCustomiser];
 }
 
 @end

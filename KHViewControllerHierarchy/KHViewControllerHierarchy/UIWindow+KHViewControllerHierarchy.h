@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+@class KHViewControllerHierarchyCustomiser;
 
 /**
  *  Category that exposes a 'button' (a UIWindow with gesture recognizers) for displaying current view controller hierarchy.
@@ -16,15 +17,14 @@
 @interface UIWindow (KHViewControllerHierarchy)
 
 /**
- *  Enable a 'button' that when touched will show hierarchy of the currently visible view controller.
- *
- *  @param buttonEnabled BOOL indicating whether 'button' should be enabled
+ *  @property Customiser applied when calling KHViewControllerHierarchyUtilities methods
  */
-- (void)setViewControllerHierarchyButtonEnabled:(BOOL)buttonEnabled;
+@property (nonatomic, readonly) KHViewControllerHierarchyCustomiser *viewControllerHierarchyCustomiser;
 
-/**
- *  Getter to indicate whether the hierarchy 'button' is currently visible.
+/*
+ * @property Enable a 'button' that when touched will show hierarchy of the currently visible view controller.
  */
-- (BOOL)viewControllerHierarchyButtonEnabled;
+@property (nonatomic, assign) BOOL viewControllerHierarchyButtonEnabled;
 
 @end
+

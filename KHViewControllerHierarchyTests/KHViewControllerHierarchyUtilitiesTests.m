@@ -15,11 +15,11 @@
 /**
  *  Currently tests positive cases only for object hierarchy & string creation
  */
-@interface KHViewControllerHierarchyTests : XCTestCase
+@interface KHViewControllerHierarchyUtilitiesTests : XCTestCase
 
 @end
 
-@implementation KHViewControllerHierarchyTests
+@implementation KHViewControllerHierarchyUtilitiesTests
 
 - (void)setUp {
     [super setUp];
@@ -34,9 +34,9 @@
 - (void)testNavigationControllerHierarchy {
     
     // Create a UINavigationController hierarchy and test objectHierarchy
-    UIViewController *topViewController = [KHViewControllerHierarchyUtilities ascendStackForViewController:[self navigationControllerHierarchyWithViewControllers:@[[MySubViewController new], [MySubSubViewController new]]]];
+    UIViewController *topViewController = [KHViewControllerHierarchyUtilities ascendStackForViewController:[self navigationControllerHierarchyWithViewControllers:@[[MySubViewController new], [MySubSubViewController new]]] withCustomHierarchies:nil];
     
-    NSString *hierarchy = [KHViewControllerHierarchyUtilities objectHierarchyForViewController:topViewController];
+    NSString *hierarchy = [KHViewControllerHierarchyUtilities objectHierarchyForViewController:topViewController withCustomHierarchies:nil];
     NSString *expected  = @"MySubSubViewController-> MySubViewController-> UIViewController";
     XCTAssert([hierarchy isEqualToString:expected], @"\"%@\" != \"%@\"", hierarchy, expected);
 }
@@ -58,18 +58,18 @@
     
     tabBarController.selectedIndex = 1;
     
-    UIViewController *topViewController = [KHViewControllerHierarchyUtilities ascendStackForViewController:tabBarController];
+    UIViewController *topViewController = [KHViewControllerHierarchyUtilities ascendStackForViewController:tabBarController withCustomHierarchies:nil];
     
-    NSString *hierarchy = [KHViewControllerHierarchyUtilities objectHierarchyForViewController:topViewController];
+    NSString *hierarchy = [KHViewControllerHierarchyUtilities objectHierarchyForViewController:topViewController withCustomHierarchies:nil];
     NSString *expected  = @"MySubSubViewController-> MySubViewController-> UIViewController";
     XCTAssert([hierarchy isEqualToString:expected], @"\"%@\" != \"%@\"", hierarchy, expected);
     
     
     tabBarController.selectedIndex = 0;
     
-    topViewController = [KHViewControllerHierarchyUtilities ascendStackForViewController:tabBarController];
+    topViewController = [KHViewControllerHierarchyUtilities ascendStackForViewController:tabBarController withCustomHierarchies:nil];
     
-    hierarchy = [KHViewControllerHierarchyUtilities objectHierarchyForViewController:topViewController];
+    hierarchy = [KHViewControllerHierarchyUtilities objectHierarchyForViewController:topViewController withCustomHierarchies:nil];
     expected  = @"MySubViewController-> UIViewController";
     XCTAssert([hierarchy isEqualToString:expected], @"\"%@\" != \"%@\"", hierarchy, expected);
 
@@ -86,9 +86,9 @@
     
     // Create a ModalViewController hierarchy and test objectHierarchy
     UIViewController *topViewController = [KHViewControllerHierarchyUtilities ascendStackForViewController:[self modalViewControllerHierarchyOnViewController:[UIApplication sharedApplication].keyWindow.rootViewController
-                                                                                                                                                                     withViewController:[MySubSubViewController new]]];
+                                                                                                                                                                     withViewController:[MySubSubViewController new]] withCustomHierarchies:nil];
     
-    NSString *hierarchy = [KHViewControllerHierarchyUtilities objectHierarchyForViewController:topViewController];
+    NSString *hierarchy = [KHViewControllerHierarchyUtilities objectHierarchyForViewController:topViewController withCustomHierarchies:nil];
     NSString *expected  = @"MySubViewController-> UIViewController";
     XCTAssert([hierarchy isEqualToString:expected], @"\"%@\" != \"%@\"", hierarchy, expected);
 }
@@ -108,9 +108,9 @@
     
     // Add the first childViewController view
     [parentViewController.view addSubview:[childViewControllers[0] view]];
-    UIViewController *topViewController = [KHViewControllerHierarchyUtilities ascendStackForViewController:parentViewController];
+    UIViewController *topViewController = [KHViewControllerHierarchyUtilities ascendStackForViewController:parentViewController withCustomHierarchies:nil];
     
-    NSString *hierarchy = [KHViewControllerHierarchyUtilities objectHierarchyForViewController:topViewController];
+    NSString *hierarchy = [KHViewControllerHierarchyUtilities objectHierarchyForViewController:topViewController withCustomHierarchies:nil];
     NSString *expected  = @"MySubViewController-> UIViewController";
     XCTAssert([hierarchy isEqualToString:expected], @"\"%@\" != \"%@\"", hierarchy, expected);
     
@@ -118,9 +118,9 @@
     // Remove the first childViewController view and add secondChildViewController view
     [[childViewControllers[0] view] removeFromSuperview];
     [parentViewController.view addSubview:[childViewControllers[1] view]];
-    topViewController = [KHViewControllerHierarchyUtilities ascendStackForViewController:parentViewController];
+    topViewController = [KHViewControllerHierarchyUtilities ascendStackForViewController:parentViewController withCustomHierarchies:nil];
     
-    hierarchy = [KHViewControllerHierarchyUtilities objectHierarchyForViewController:topViewController];
+    hierarchy = [KHViewControllerHierarchyUtilities objectHierarchyForViewController:topViewController withCustomHierarchies:nil];
     expected  = @"MySubSubViewController-> MySubViewController-> UIViewController";
     XCTAssert([hierarchy isEqualToString:expected], @"\"%@\" != \"%@\"", hierarchy, expected);
 }
@@ -162,18 +162,18 @@
     // Ensure that navigationControllerWithChild is selected in tabBarController stack
     tabBarController.selectedIndex = 1;
     
-    UIViewController *topViewController = [KHViewControllerHierarchyUtilities ascendStackForViewController:presentingViewController];
+    UIViewController *topViewController = [KHViewControllerHierarchyUtilities ascendStackForViewController:presentingViewController withCustomHierarchies:nil];
     
-    NSString *hierarchy = [KHViewControllerHierarchyUtilities objectHierarchyForViewController:topViewController];
+    NSString *hierarchy = [KHViewControllerHierarchyUtilities objectHierarchyForViewController:topViewController withCustomHierarchies:nil];
     NSString *expected  = @"MySubSubViewController-> MySubViewController-> UIViewController";
     XCTAssert([hierarchy isEqualToString:expected], @"\"%@\" != \"%@\"", hierarchy, expected);
     
     // Ensure that navigationControllerWithNoChild is selected in tabBarController stack
     tabBarController.selectedIndex = 0;
     
-    topViewController = [KHViewControllerHierarchyUtilities ascendStackForViewController:presentingViewController];
+    topViewController = [KHViewControllerHierarchyUtilities ascendStackForViewController:presentingViewController withCustomHierarchies:nil];
     
-    hierarchy = [KHViewControllerHierarchyUtilities objectHierarchyForViewController:topViewController];
+    hierarchy = [KHViewControllerHierarchyUtilities objectHierarchyForViewController:topViewController withCustomHierarchies:nil];
     expected  = @"MySubViewController-> UIViewController";
     XCTAssert([hierarchy isEqualToString:expected], @"\"%@\" != \"%@\"", hierarchy, expected);
 }

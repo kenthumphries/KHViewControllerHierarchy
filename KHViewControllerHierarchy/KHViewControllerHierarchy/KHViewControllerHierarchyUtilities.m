@@ -11,11 +11,12 @@
 @implementation KHViewControllerHierarchyUtilities
 
 + (void)showAlertViewWithHierarchyForVisibleViewControllerOfWindow:(UIWindow*)window
+                                             withCustomHierarchies:(KHViewControllerHierarchyCustomiser*)customiser
 {
     // Determine the top of the ViewController hierarchy
-    UIViewController *visibleViewController = [self ascendStackForViewController:window.rootViewController];
+    UIViewController *visibleViewController = [self ascendStackForViewController:window.rootViewController withCustomHierarchies:customiser];
     
-    NSString *viewControllerHierarchy = [self objectHierarchyForViewController:visibleViewController];
+    NSString *viewControllerHierarchy = [self objectHierarchyForViewController:visibleViewController withCustomHierarchies:customiser];
     
     [[[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"%s", object_getClassName(visibleViewController)]
                                 message:viewControllerHierarchy
@@ -25,6 +26,7 @@
 }
 
 + (NSString *)objectHierarchyForViewController:(UIViewController*)viewController
+                         withCustomHierarchies:(KHViewControllerHierarchyCustomiser*)customiser
 {
     NSString *classHierarchy = [viewController.class description];
     if (viewController.class != UIViewController.class)
@@ -44,9 +46,16 @@
 }
 
 + (UIViewController *)ascendStackForViewController:(UIViewController *)viewController
+                             withCustomHierarchies:(KHViewControllerHierarchyCustomiser*)customiser
 {
     UIViewController *topOfStack = viewController;
-    if ([viewController isKindOfClass:UINavigationController.class])
+
+    KHViewControllerHierarchyAscendStackBlock customBlock = [customiser ascendStackBlockForClass:viewController.class];
+    if (customBlock)
+    {
+        topOfStack = customBlock(viewController);
+    }
+    else if ([viewController isKindOfClass:UINavigationController.class])
     {
         topOfStack = [self ascendStackForNavigationController:(UINavigationController*)viewController];
     }
@@ -54,9 +63,13 @@
     {
         topOfStack = [self ascendStackForTabBarController:(UITabBarController*)viewController];
     }
+    else if ([viewController isKindOfClass:UIPageViewController.class])
+    {
+        topOfStack = [self ascendStackForPageViewController:(UIPageViewController*)viewController];
+    }
     else if ([viewController presentedViewController])
     {
-        topOfStack = [self ascendStackForViewController:[viewController presentedViewController]];
+        topOfStack = [self ascendStackForViewController:[viewController presentedViewController] withCustomHierarchies:customiser];
     }
     else if (viewController.childViewControllers.count)
     {
@@ -68,7 +81,7 @@
         return topOfStack;
     }
     
-    return [self ascendStackForViewController:topOfStack];
+    return [self ascendStackForViewController:topOfStack withCustomHierarchies:customiser];
 }
 
 + (UIViewController*)ascendStackForNavigationController:(UINavigationController*)navigationController
@@ -89,8 +102,27 @@
         {
             return childViewController;
         }
+        else if (childViewController.childViewControllers.count)
+        {
+            return [self ascendStackForChildrenOfViewController:childViewController];
+        }
     }
     return viewController;
+}
+
++ (UIViewController *)ascendStackForPageViewController:(UIPageViewController *)pageViewController
+{
+    if ([pageViewController.dataSource respondsToSelector:@selector(presentationIndexForPageViewController:)])
+    {
+        NSInteger selectedIndex = [pageViewController.dataSource presentationIndexForPageViewController:pageViewController];
+        if (selectedIndex < pageViewController.viewControllers.count)
+        {
+            return pageViewController.viewControllers[selectedIndex];
+        }
+    }
+    
+    // Otherwise, just return the first pageViewController
+    return pageViewController.viewControllers[0];
 }
 
 

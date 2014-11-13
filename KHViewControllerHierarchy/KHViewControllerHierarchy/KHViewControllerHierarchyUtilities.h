@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Kent Humphries. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import "KHViewControllerHierarchyCustomiser.h"
 
 /**
  *  Utility object containing methods for determinining the current view hierarchy
@@ -18,8 +18,10 @@
 *  Show a view explaining the hiearchy of the current visible viewController
 *
 *  @param window UIWindow containing the current visible viewController
+*  @param customiser Customisation object used to extend functionality
 */
-+ (void)showAlertViewWithHierarchyForVisibleViewControllerOfWindow:(UIWindow*)window;
++ (void)showAlertViewWithHierarchyForVisibleViewControllerOfWindow:(UIWindow*)window
+                                             withCustomHierarchies:(KHViewControllerHierarchyCustomiser*)customiser;
 
 /**
  *  Return the object hierarchy of a given UIViewController up to (and including) UIViewController
@@ -28,8 +30,10 @@
  *  @param viewController UIViewController subclass to find object hierarchy for
  *
  *  @return NSString containing the object hierarchy of viewcontroller
+ *  @param customiser Customisation object used to extend functionality
  */
-+ (NSString *)objectHierarchyForViewController:(UIViewController*)viewController;
++ (NSString *)objectHierarchyForViewController:(UIViewController*)viewController
+                         withCustomHierarchies:(KHViewControllerHierarchyCustomiser*)customiser;
 
 /**
  *  Find the 'top' of the stack on top of the viewController
@@ -38,7 +42,9 @@
  *  @param viewController UIViewController subclass to find the top-most view on top of its
  *
  *  @return UIViewController that is at the top of the current UIViewController 'stack'
+ *  @param customiser Customisation object used to extend functionality
  */
-+ (UIViewController *)ascendStackForViewController:(UIViewController *)viewController;
++ (UIViewController *)ascendStackForViewController:(UIViewController *)viewController
+                             withCustomHierarchies:(KHViewControllerHierarchyCustomiser*)customiser;
 
 @end
