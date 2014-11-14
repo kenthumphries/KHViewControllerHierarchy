@@ -13,12 +13,23 @@
 
 static int const kHierarchyWindowDiameter = 100;
 
-static NSString *const kCustomiserKey               = @"customiser";
+static NSString *const kExpandedKey               = @"expanded";
+static NSString *const kCustomiserKey             = @"customiser";
 static NSString *const kHierarchyWindowKey        = @"hierarchyWindow";
 static NSString *const kHierarchyWindowOriginXKey = @"hierarchyWindowOriginX";
 static NSString *const kHierarchyWindowOriginYKey = @"hierarchyWindowOriginY";
 
 @implementation UIWindow (KHViewControllerHierarchy)
+
+- (BOOL)expanded
+{
+    return [objc_getAssociatedObject(self, (__bridge const void *)(kExpandedKey)) boolValue];
+}
+
+- (void)setExpanded:(BOOL)expanded
+{
+    objc_setAssociatedObject(self, (__bridge const void *)(kExpandedKey), @(expanded), OBJC_ASSOCIATION_ASSIGN);
+}
 
 - (KHViewControllerHierarchyCustomiser*)viewControllerHierarchyCustomiser
 {
@@ -36,17 +47,19 @@ static NSString *const kHierarchyWindowOriginYKey = @"hierarchyWindowOriginY";
     UIWindow *hierarchyWindow = objc_getAssociatedObject(self, (__bridge const void *)(kHierarchyWindowKey));
     if (!hierarchyWindow)
     {
-        hierarchyWindow = [[UIWindow alloc] initWithFrame:CGRectMake(kHierarchyWindowDiameter,
-                                                                     kHierarchyWindowDiameter,
+        [self setHierarchyWindowOrigin:CGPointMake(kHierarchyWindowDiameter, kHierarchyWindowDiameter)];
+
+        hierarchyWindow = [[UIWindow alloc] initWithFrame:CGRectMake(self.hierarchyWindowOrigin.x,
+                                                                     self.hierarchyWindowOrigin.y,
                                                                      kHierarchyWindowDiameter,
                                                                      kHierarchyWindowDiameter)];
         hierarchyWindow.layer.cornerRadius = kHierarchyWindowDiameter * 0.5;
         hierarchyWindow.windowLevel = self.windowLevel + 1;
-        hierarchyWindow.backgroundColor = [UIColor grayColor];
+        hierarchyWindow.backgroundColor = [UIColor lightGrayColor];
         hierarchyWindow.alpha = 0.2;
         hierarchyWindow.rootViewController = [UIViewController new]; // Avoid compiler warning - a window _should_ have a rootViewController
         
-        UIGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showHierarchyView)];
+        UIGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showHierarchyView:)];
         [hierarchyWindow addGestureRecognizer:tapRecognizer];
 
         UIGestureRecognizer *panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
@@ -84,30 +97,156 @@ static NSString *const kHierarchyWindowOriginYKey = @"hierarchyWindowOriginY";
 
 - (void)handlePanGesture:(UIPanGestureRecognizer*)panGestureRecognizer
 {
-    if (panGestureRecognizer.state == UIGestureRecognizerStateEnded)
+    if (!self.expanded) // panning is disabled when expanded
     {
-        // Do nothing
-    }
-    else if (panGestureRecognizer.state == UIGestureRecognizerStateBegan)
-    {
-        // Store the current location of the hierarchyWindow so it can be moved relatively
-        [self setHierarchyWindowOrigin:self.hierarchyWindow.frame.origin];
-    }
-    else if (panGestureRecognizer.state == UIGestureRecognizerStateChanged)
-    {
-        // Update the frame of the window given origin + offset
-        CGPoint touch = [panGestureRecognizer translationInView:self];
-        
-        self.hierarchyWindow.frame = CGRectMake(self.hierarchyWindowOrigin.x + touch.x,
-                                                self.hierarchyWindowOrigin.y + touch.y,
-                                                self.hierarchyWindow.frame.size.width,
-                                                self.hierarchyWindow.frame.size.height);
+        if (panGestureRecognizer.state == UIGestureRecognizerStateEnded)
+        {
+            // Store the updated origin
+            [self setHierarchyWindowOrigin:self.hierarchyWindow.frame.origin];
+        }
+        else if (panGestureRecognizer.state == UIGestureRecognizerStateBegan)
+        {
+            // Store the current location of the hierarchyWindow so it can be moved relatively
+            [self setHierarchyWindowOrigin:self.hierarchyWindow.frame.origin];
+        }
+        else if (panGestureRecognizer.state == UIGestureRecognizerStateChanged)
+        {
+            // Update the frame of the window given origin + offset
+            CGPoint touch = [panGestureRecognizer translationInView:self];
+            
+            self.hierarchyWindow.frame = CGRectMake(self.hierarchyWindowOrigin.x + touch.x,
+                                                    self.hierarchyWindowOrigin.y + touch.y,
+                                                    self.hierarchyWindow.frame.size.width,
+                                                    self.hierarchyWindow.frame.size.height);
+        }
     }
 }
 
-- (void)showHierarchyView
+- (void)showHierarchyView:(UITapGestureRecognizer*)tapGestureRecognizer
 {
-    [KHViewControllerHierarchyUtilities showAlertViewWithHierarchyForVisibleViewControllerOfWindow:self withCustomHierarchies:self.viewControllerHierarchyCustomiser];
+    // Expand the hierarchyView to fill the entire window
+    UIWindow *hierarchyWindow = self.hierarchyWindow;
+
+    if (!self.expanded)
+    {
+        // Determine the top of the ViewController hierarchy & it's path
+        NSMutableString *pathString = [NSMutableString new];
+        UIViewController *visibleViewController = [KHViewControllerHierarchyUtilities ascendStackForViewController:self.rootViewController withPathString:pathString withCustomHierarchies:self.viewControllerHierarchyCustomiser];
+        
+        NSString *viewControllerHierarchy = [KHViewControllerHierarchyUtilities objectHierarchyForViewController:visibleViewController withCustomHierarchies:self.viewControllerHierarchyCustomiser];
+        
+        [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            hierarchyWindow.frame  = CGRectMake(20,
+                                                20,
+                                                self.frame.size.width - 40,
+                                                self.frame.size.height - 40);
+            
+            hierarchyWindow.alpha = 0.9;
+
+        } completion:^(BOOL finished) {
+            
+            UIScrollView *scrollView = [UIScrollView new];
+            scrollView.alpha = 0.0;
+
+            [hierarchyWindow addSubview:scrollView];
+            scrollView.frame = CGRectMake(28,
+                                          28,
+                                          hierarchyWindow.frame.size.width - 40,
+                                          hierarchyWindow.frame.size.height - 40);
+            
+            // Label containing Hierarchy subclass info
+            UILabel *hierarchyLabel = [UILabel new];
+
+            NSString *title = [NSString stringWithFormat:@"Hierarchy of %@\n", visibleViewController.class.description];
+            UIFont *font = [UIFont boldSystemFontOfSize:hierarchyLabel.font.pointSize];
+            NSDictionary *attrsDictionary = @{NSFontAttributeName : font};
+
+            NSMutableAttributedString *hierarchyText = [[NSMutableAttributedString alloc] initWithString:title
+                                                                                              attributes:attrsDictionary];
+            
+            font = [UIFont systemFontOfSize:hierarchyLabel.font.pointSize];
+            attrsDictionary = @{NSFontAttributeName : font};
+            [hierarchyText appendAttributedString:[[NSMutableAttributedString alloc] initWithString:viewControllerHierarchy
+                                                                                         attributes:attrsDictionary]];
+            
+            hierarchyLabel.numberOfLines  = 0;
+            hierarchyLabel.attributedText = hierarchyText;
+            hierarchyLabel.translatesAutoresizingMaskIntoConstraints = NO;
+            
+            // Label containing path info
+            UILabel *pathLabel = [UILabel new];
+            
+            title = [NSString stringWithFormat:@"Path to %@\n", visibleViewController.class.description];
+            font = [UIFont boldSystemFontOfSize:pathLabel.font.pointSize];
+            attrsDictionary = @{NSFontAttributeName : font};
+            
+            NSMutableAttributedString *pathText = [[NSMutableAttributedString alloc] initWithString:title
+                                                                                              attributes:attrsDictionary];
+            
+            font = [UIFont systemFontOfSize:pathLabel.font.pointSize];
+            attrsDictionary = @{NSFontAttributeName : font};
+            [pathText appendAttributedString:[[NSMutableAttributedString alloc] initWithString:pathString
+                                                                                    attributes:attrsDictionary]];
+
+            pathLabel.numberOfLines  = 0;
+            pathLabel.attributedText = pathText;
+            pathLabel.translatesAutoresizingMaskIntoConstraints = NO;
+            
+            [scrollView addSubview:hierarchyLabel];
+            [scrollView addSubview:pathLabel];
+            
+            NSDictionary *views   = NSDictionaryOfVariableBindings(hierarchyLabel, pathLabel);
+            NSDictionary *metrics = @{@"maxWidth" : @(scrollView.frame.size.width)};
+
+            [scrollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[hierarchyLabel(<=maxWidth)]|"
+                                                                                    options:0
+                                                                                    metrics:metrics
+                                                                                      views:views]];
+            [scrollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[hierarchyLabel]-40-[pathLabel]|"
+                                                                                    options:NSLayoutFormatAlignAllLeft | NSLayoutFormatAlignAllRight
+                                                                                    metrics:nil
+                                                                                      views:views]];
+            
+            [UIView animateWithDuration:0.05 animations:^{
+                scrollView.alpha = 1.0;
+            }];
+        }];
+        
+        [self setExpanded:YES];
+    }
+    else
+    {
+        // Fade away UILabels
+        [UIView animateWithDuration:0.05 animations:^{
+            // Fade out any subviews of hierarchyWindow
+            for (UIView *subview in hierarchyWindow.subviews)
+            {
+                subview.alpha = 0.0;
+            }
+        } completion:^(BOOL finished) {
+            // Remove any subviews of hierarchy Window
+            for (UIView *subview in hierarchyWindow.subviews)
+            {
+                [subview removeFromSuperview];
+            }
+            
+            [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+                
+                hierarchyWindow.alpha = 0.2;
+                
+                hierarchyWindow.frame  = CGRectMake(self.hierarchyWindowOrigin.x,
+                                                    self.hierarchyWindowOrigin.y,
+                                                    kHierarchyWindowDiameter,
+                                                    kHierarchyWindowDiameter);
+            } completion:^(BOOL finished) {
+                //Do nothing
+            }];
+        }];
+        
+        self.expanded = NO;
+    }
+    
+//    [KHViewControllerHierarchyUtilities showAlertViewWithHierarchyForVisibleViewControllerOfWindow:self withCustomHierarchies:self.viewControllerHierarchyCustomiser];
 }
 
 @end
