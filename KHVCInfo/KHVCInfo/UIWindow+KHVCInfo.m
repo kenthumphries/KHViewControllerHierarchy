@@ -7,7 +7,7 @@
 //
 
 #import "UIWindow+KHVCInfo.h"
-#import "KHVCInfoCustomiser.h"
+#import "KHVCInfoPathCustomiser.h"
 #import "KHVCInfoUtilities.h"
 #import <objc/runtime.h>
 #import "KHVCInfoHierarchyView.h"
@@ -32,12 +32,12 @@ static NSString *const kHierarchyWindowOriginYKey = @"hierarchyWindowOriginY";
     objc_setAssociatedObject(self, (__bridge const void *)(kExpandedKey), @(expanded), OBJC_ASSOCIATION_ASSIGN);
 }
 
-- (KHVCInfoCustomiser*)viewControllerHierarchyCustomiser
+- (KHVCInfoPathCustomiser*)viewControllerHierarchyCustomiser
 {
-    KHVCInfoCustomiser *customiser = objc_getAssociatedObject(self, (__bridge const void *)(kCustomiserKey));
+    KHVCInfoPathCustomiser *customiser = objc_getAssociatedObject(self, (__bridge const void *)(kCustomiserKey));
     if (!customiser)
     {
-        customiser = [KHVCInfoCustomiser new];
+        customiser = [KHVCInfoPathCustomiser new];
         objc_setAssociatedObject(self, (__bridge const void *)(kCustomiserKey), customiser, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
     return customiser;
@@ -141,7 +141,7 @@ static NSString *const kHierarchyWindowOriginYKey = @"hierarchyWindowOriginY";
     {
         // Determine the top of the ViewController hierarchy & it's path
         NSMutableString *pathString = [NSMutableString new];
-        UIViewController *visibleViewController = [KHVCInfoUtilities ascendStackForViewController:self.rootViewController withPathString:pathString withCustomHierarchies:self.viewControllerHierarchyCustomiser];
+        UIViewController *visibleViewController = [KHVCInfoUtilities ascendStackForViewController:self.rootViewController withPathString:pathString withPathCustomiser:self.viewControllerHierarchyCustomiser];
         
         [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
             hierarchyWindow.frame  = CGRectMake(20,

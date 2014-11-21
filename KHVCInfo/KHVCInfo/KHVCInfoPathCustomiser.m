@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Kent Humphries. All rights reserved.
 //
 
-#import "KHVCInfoCustomiser.h"
+#import "KHVCInfoPathCustomiser.h"
 
-@interface KHVCInfoCustomiser ()
+@interface KHVCInfoPathCustomiser ()
 
 @property (nonatomic, strong) NSMutableDictionary *customBlocks;
 
@@ -16,7 +16,7 @@
 
 @end
 
-@implementation KHVCInfoCustomiser
+@implementation KHVCInfoPathCustomiser
 
 -(NSMutableDictionary*)customBlocks
 {

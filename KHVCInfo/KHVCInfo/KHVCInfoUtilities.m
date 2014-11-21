@@ -31,7 +31,7 @@
 
 + (UIViewController *)ascendStackForViewController:(UIViewController *)viewController
                                     withPathString:(NSMutableString *)pathString
-                             withCustomHierarchies:(KHVCInfoCustomiser*)customiser
+                                withPathCustomiser:(KHVCInfoPathCustomiser*)customiser
 {
     if (!pathString.length)
     {
@@ -39,7 +39,7 @@
     }
     
     UIViewController *topOfStack = viewController;
-
+    
     KHVCInfoAscendStackBlock customBlock = [customiser ascendStackBlockForClass:viewController.class];
     if (customBlock)
     {
@@ -61,7 +61,7 @@
     {
         UIViewController *topViewController = [viewController presentedViewController];
         [pathString appendFormat:@" (presenting) %@", topViewController.class.description];
-        topOfStack = [self ascendStackForViewController:topViewController withPathString:pathString withCustomHierarchies:customiser];
+        topOfStack = [self ascendStackForViewController:topViewController withPathString:pathString withPathCustomiser:customiser];
     }
     else if (viewController.childViewControllers.count)
     {
@@ -73,7 +73,7 @@
         return topOfStack;
     }
     
-    return [self ascendStackForViewController:topOfStack withPathString:pathString withCustomHierarchies:customiser];
+    return [self ascendStackForViewController:topOfStack withPathString:pathString withPathCustomiser:customiser];
 }
 
 + (UIViewController*)ascendStackForNavigationController:(UINavigationController*)navigationController withPathString:(NSMutableString *)pathString

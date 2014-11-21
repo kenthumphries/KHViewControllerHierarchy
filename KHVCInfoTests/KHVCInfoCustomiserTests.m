@@ -10,7 +10,7 @@
 #import <XCTest/XCTest.h>
 #import "MySubViewController.h"
 #import "MySubSubViewController.h"
-#import "KHVCInfoCustomiser.h"
+#import "KHVCInfoPathCustomiser.h"
 
 @interface KHVCInfoCustomiserTests : XCTestCase
 
@@ -19,7 +19,7 @@
 @implementation KHVCInfoCustomiserTests
 
 - (void)testRegisterDeregisterClass {
-    KHVCInfoCustomiser *customiser = [KHVCInfoCustomiser new];
+    KHVCInfoPathCustomiser *customiser = [KHVCInfoPathCustomiser new];
     
     // Should get back a nil block - haven't yet registered a class
     XCTAssertNil([customiser ascendStackBlockForClass:MySubViewController.class]);
@@ -46,7 +46,7 @@
     
     // 1) Register superclass and ensure it's block is returned
     
-    KHVCInfoCustomiser *customiser = [KHVCInfoCustomiser new];
+    KHVCInfoPathCustomiser *customiser = [KHVCInfoPathCustomiser new];
     
     KHVCInfoAscendStackBlock mySubViewControllerBlock = ^UIViewController *(UIViewController *viewController, NSMutableString *pathString) {
         return [MySubViewController new];
@@ -99,7 +99,7 @@
 {
     // 1) Register superclass before subclass and ensure superclass block is returned for sub & superclass
     
-    KHVCInfoCustomiser *customiser = [KHVCInfoCustomiser new];
+    KHVCInfoPathCustomiser *customiser = [KHVCInfoPathCustomiser new];
     
     KHVCInfoAscendStackBlock mySubViewControllerBlock = ^UIViewController *(UIViewController *viewController, NSMutableString *pathString) {
         return [MySubViewController new];

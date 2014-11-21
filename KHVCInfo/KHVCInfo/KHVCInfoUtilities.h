@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "KHVCInfoCustomiser.h"
+#import "KHVCInfoPathCustomiser.h"
 
 /**
  *  Utility object containing methods for determinining the current view hierarchy
@@ -37,6 +37,6 @@
  */
 + (UIViewController *)ascendStackForViewController:(UIViewController *)viewController
                                     withPathString:(NSMutableString *)pathString
-                             withCustomHierarchies:(KHVCInfoCustomiser*)customiser;
+                                withPathCustomiser:(KHVCInfoPathCustomiser*)customiser;
 
 @end

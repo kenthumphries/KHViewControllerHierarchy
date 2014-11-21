@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-@class KHVCInfoCustomiser;
+@class KHVCInfoPathCustomiser;
 
 /**
  *  Category that exposes a 'button' (a UIWindow with gesture recognizers) for displaying current view controller hierarchy.
@@ -19,7 +19,7 @@
 /**
  *  @property Customiser applied when calling KHVCInfoUtilities methods
  */
-@property (nonatomic, readonly) KHVCInfoCustomiser *viewControllerHierarchyCustomiser;
+@property (nonatomic, readonly) KHVCInfoPathCustomiser *viewControllerHierarchyCustomiser;
 
 /*
  * @property Enable a 'button' that when touched will show hierarchy of the currently visible view controller.

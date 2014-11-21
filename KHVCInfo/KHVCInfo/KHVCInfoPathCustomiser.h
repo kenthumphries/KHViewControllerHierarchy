@@ -21,7 +21,7 @@ typedef UIViewController *(^KHVCInfoAscendStackBlock)(UIViewController *viewCont
 /**
  *  Configuration class used to customise actions in KHVCInfoUtilities
  */
-@interface KHVCInfoCustomiser : NSObject
+@interface KHVCInfoPathCustomiser : NSObject
 
 /**
  *  Register a Class such that any instance of this class (or it's subclasses) will use the associated block to find it's 'top' UIViewController.
