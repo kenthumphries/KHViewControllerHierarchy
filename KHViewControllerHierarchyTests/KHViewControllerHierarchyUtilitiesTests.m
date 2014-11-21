@@ -37,7 +37,7 @@
     // Create a UINavigationController hierarchy and test objectHierarchy
     UIViewController *topViewController = [KHViewControllerHierarchyUtilities ascendStackForViewController:[self navigationControllerHierarchyWithViewControllers:@[[MySubViewController new], [MySubSubViewController new]]] withPathString:nil withCustomHierarchies:nil];
     
-    NSString *hierarchy = [KHViewControllerHierarchyUtilities objectHierarchyForViewController:topViewController withCustomHierarchies:nil];
+    NSString *hierarchy = [KHViewControllerHierarchyUtilities objectHierarchyForViewController:topViewController];
     NSString *expected  = @"MySubSubViewController-> MySubViewController-> UIViewController";
     XCTAssert([hierarchy isEqualToString:expected], @"\"%@\" != \"%@\"", hierarchy, expected);
 }
@@ -61,7 +61,7 @@
     
     UIViewController *topViewController = [KHViewControllerHierarchyUtilities ascendStackForViewController:tabBarController withPathString:nil withCustomHierarchies:nil];
     
-    NSString *hierarchy = [KHViewControllerHierarchyUtilities objectHierarchyForViewController:topViewController withCustomHierarchies:nil];
+    NSString *hierarchy = [KHViewControllerHierarchyUtilities objectHierarchyForViewController:topViewController];
     NSString *expected  = @"MySubSubViewController-> MySubViewController-> UIViewController";
     XCTAssert([hierarchy isEqualToString:expected], @"\"%@\" != \"%@\"", hierarchy, expected);
     
@@ -70,7 +70,7 @@
     
     topViewController = [KHViewControllerHierarchyUtilities ascendStackForViewController:tabBarController withPathString:nil withCustomHierarchies:nil];
     
-    hierarchy = [KHViewControllerHierarchyUtilities objectHierarchyForViewController:topViewController withCustomHierarchies:nil];
+    hierarchy = [KHViewControllerHierarchyUtilities objectHierarchyForViewController:topViewController];
     expected  = @"MySubViewController-> UIViewController";
     XCTAssert([hierarchy isEqualToString:expected], @"\"%@\" != \"%@\"", hierarchy, expected);
 }
@@ -88,7 +88,7 @@
     UIViewController *topViewController = [KHViewControllerHierarchyUtilities ascendStackForViewController:[self modalViewControllerHierarchyOnViewController:[UIApplication sharedApplication].keyWindow.rootViewController
                                                                                                                                                                      withViewController:[MySubSubViewController new]] withPathString:nil withCustomHierarchies:nil];
     
-    NSString *hierarchy = [KHViewControllerHierarchyUtilities objectHierarchyForViewController:topViewController withCustomHierarchies:nil];
+    NSString *hierarchy = [KHViewControllerHierarchyUtilities objectHierarchyForViewController:topViewController];
     NSString *expected  = @"MySubViewController-> UIViewController";
     XCTAssert([hierarchy isEqualToString:expected], @"\"%@\" != \"%@\"", hierarchy, expected);
 }
@@ -110,7 +110,7 @@
     [parentViewController.view addSubview:[childViewControllers[0] view]];
     UIViewController *topViewController = [KHViewControllerHierarchyUtilities ascendStackForViewController:parentViewController withPathString:nil withCustomHierarchies:nil];
     
-    NSString *hierarchy = [KHViewControllerHierarchyUtilities objectHierarchyForViewController:topViewController withCustomHierarchies:nil];
+    NSString *hierarchy = [KHViewControllerHierarchyUtilities objectHierarchyForViewController:topViewController];
     NSString *expected  = @"MySubViewController-> UIViewController";
     XCTAssert([hierarchy isEqualToString:expected], @"\"%@\" != \"%@\"", hierarchy, expected);
     
@@ -120,7 +120,7 @@
     [parentViewController.view addSubview:[childViewControllers[1] view]];
     topViewController = [KHViewControllerHierarchyUtilities ascendStackForViewController:parentViewController withPathString:nil withCustomHierarchies:nil];
     
-    hierarchy = [KHViewControllerHierarchyUtilities objectHierarchyForViewController:topViewController withCustomHierarchies:nil];
+    hierarchy = [KHViewControllerHierarchyUtilities objectHierarchyForViewController:topViewController];
     expected  = @"MySubSubViewController-> MySubViewController-> UIViewController";
     XCTAssert([hierarchy isEqualToString:expected], @"\"%@\" != \"%@\"", hierarchy, expected);
 }
@@ -165,7 +165,7 @@
     
     UIViewController *topViewController = [KHViewControllerHierarchyUtilities ascendStackForViewController:presentingViewController withPathString:nil withCustomHierarchies:nil];
     
-    NSString *hierarchy = [KHViewControllerHierarchyUtilities objectHierarchyForViewController:topViewController withCustomHierarchies:nil];
+    NSString *hierarchy = [KHViewControllerHierarchyUtilities objectHierarchyForViewController:topViewController];
     NSString *expected  = @"MySubSubViewController-> MySubViewController-> UIViewController";
     XCTAssert([hierarchy isEqualToString:expected], @"\"%@\" != \"%@\"", hierarchy, expected);
     
@@ -174,7 +174,7 @@
     
     topViewController = [KHViewControllerHierarchyUtilities ascendStackForViewController:presentingViewController withPathString:nil withCustomHierarchies:nil];
     
-    hierarchy = [KHViewControllerHierarchyUtilities objectHierarchyForViewController:topViewController withCustomHierarchies:nil];
+    hierarchy = [KHViewControllerHierarchyUtilities objectHierarchyForViewController:topViewController];
     expected  = @"MySubViewController-> UIViewController";
     XCTAssert([hierarchy isEqualToString:expected], @"\"%@\" != \"%@\"", hierarchy, expected);
 }
@@ -191,8 +191,7 @@
     UIViewController *topViewController = [KHViewControllerHierarchyUtilities ascendStackForViewController:pageViewController
                                                                                      withPathString:nil withCustomHierarchies:nil];
     
-    NSString *hierarchy = [KHViewControllerHierarchyUtilities objectHierarchyForViewController:topViewController
-                                                                        withCustomHierarchies:nil];
+    NSString *hierarchy = [KHViewControllerHierarchyUtilities objectHierarchyForViewController:topViewController];
     NSString *expected  = @"MySubViewController-> UIViewController";
     XCTAssert([hierarchy isEqualToString:expected], @"\"%@\" != \"%@\"", hierarchy, expected);
     
@@ -205,8 +204,7 @@
     topViewController = [KHViewControllerHierarchyUtilities ascendStackForViewController:pageViewController
                                                                    withPathString:nil withCustomHierarchies:nil];
     
-    hierarchy = [KHViewControllerHierarchyUtilities objectHierarchyForViewController:topViewController
-                                                               withCustomHierarchies:nil];
+    hierarchy = [KHViewControllerHierarchyUtilities objectHierarchyForViewController:topViewController];
     expected  = @"MySubSubViewController-> MySubViewController-> UIViewController";
     XCTAssert([hierarchy isEqualToString:expected], @"\"%@\" != \"%@\"", hierarchy, expected);
     
@@ -219,8 +217,7 @@
     topViewController = [KHViewControllerHierarchyUtilities ascendStackForViewController:pageViewController
                                                                    withPathString:nil withCustomHierarchies:nil];
     
-    hierarchy = [KHViewControllerHierarchyUtilities objectHierarchyForViewController:topViewController
-                                                               withCustomHierarchies:nil];
+    hierarchy = [KHViewControllerHierarchyUtilities objectHierarchyForViewController:topViewController];
     expected  = @"MySubViewController-> UIViewController";
     XCTAssert([hierarchy isEqualToString:expected], @"\"%@\" != \"%@\"", hierarchy, expected);
 }

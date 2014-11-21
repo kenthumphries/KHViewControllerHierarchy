@@ -16,6 +16,8 @@
     
     self.window.viewControllerHierarchyButtonEnabled = YES;
     
+    [self.window makeKeyWindow];
+    
     return YES;
 }
 

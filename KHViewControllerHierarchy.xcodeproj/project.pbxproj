@@ -17,6 +17,7 @@
 		37D4DE4D1A09564A00E201F4 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 37D4DE4C1A09564A00E201F4 /* Images.xcassets */; };
 		37D4DE501A09564A00E201F4 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37D4DE4E1A09564A00E201F4 /* LaunchScreen.xib */; };
 		37D4DE5C1A09564A00E201F4 /* KHViewControllerHierarchyUtilitiesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 37D4DE5B1A09564A00E201F4 /* KHViewControllerHierarchyUtilitiesTests.m */; };
+		37D86AA21A1F68C0007C2EF6 /* KHViewControllerHierarchyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37D86AA11A1F68C0007C2EF6 /* KHViewControllerHierarchyView.m */; };
 		37DA8C541A14249700E490FB /* KHViewControllerHierarchyCustomiser.m in Sources */ = {isa = PBXBuildFile; fileRef = 37DA8C511A14249700E490FB /* KHViewControllerHierarchyCustomiser.m */; };
 		37DA8C5A1A14285200E490FB /* KHViewControllerHierarchyCustomiserTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 37DA8C591A14285200E490FB /* KHViewControllerHierarchyCustomiserTests.m */; };
 		37DA8C5D1A142DA300E490FB /* MyPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 37DA8C5C1A142DA300E490FB /* MyPageViewController.m */; };
@@ -53,6 +54,8 @@
 		37D4DE551A09564A00E201F4 /* KHViewControllerHierarchyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KHViewControllerHierarchyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		37D4DE5A1A09564A00E201F4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		37D4DE5B1A09564A00E201F4 /* KHViewControllerHierarchyUtilitiesTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KHViewControllerHierarchyUtilitiesTests.m; sourceTree = "<group>"; };
+		37D86AA01A1F68C0007C2EF6 /* KHViewControllerHierarchyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KHViewControllerHierarchyView.h; sourceTree = "<group>"; };
+		37D86AA11A1F68C0007C2EF6 /* KHViewControllerHierarchyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KHViewControllerHierarchyView.m; sourceTree = "<group>"; };
 		37DA8C501A14249700E490FB /* KHViewControllerHierarchyCustomiser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KHViewControllerHierarchyCustomiser.h; sourceTree = "<group>"; };
 		37DA8C511A14249700E490FB /* KHViewControllerHierarchyCustomiser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KHViewControllerHierarchyCustomiser.m; sourceTree = "<group>"; };
 		37DA8C591A14285200E490FB /* KHViewControllerHierarchyCustomiserTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KHViewControllerHierarchyCustomiserTests.m; sourceTree = "<group>"; };
@@ -87,6 +90,7 @@
 				3719F4681A09861800C1A8E2 /* KHViewControllerHierarchyUtilities.m */,
 				37DA8C501A14249700E490FB /* KHViewControllerHierarchyCustomiser.h */,
 				37DA8C511A14249700E490FB /* KHViewControllerHierarchyCustomiser.m */,
+				37D86A9F1A1F68C0007C2EF6 /* Views */,
 			);
 			path = KHViewControllerHierarchy;
 			sourceTree = "<group>";
@@ -163,6 +167,15 @@
 				37D4DE5A1A09564A00E201F4 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		37D86A9F1A1F68C0007C2EF6 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				37D86AA01A1F68C0007C2EF6 /* KHViewControllerHierarchyView.h */,
+				37D86AA11A1F68C0007C2EF6 /* KHViewControllerHierarchyView.m */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -269,6 +282,7 @@
 				3719F46A1A09861800C1A8E2 /* KHViewControllerHierarchyUtilities.m in Sources */,
 				37DA8C541A14249700E490FB /* KHViewControllerHierarchyCustomiser.m in Sources */,
 				37DA8C5D1A142DA300E490FB /* MyPageViewController.m in Sources */,
+				37D86AA21A1F68C0007C2EF6 /* KHViewControllerHierarchyView.m in Sources */,
 				3719F4761A09974F00C1A8E2 /* MySubViewController.m in Sources */,
 				3719F4751A09974F00C1A8E2 /* MySubSubViewController.m in Sources */,
 				3719F4781A09979300C1A8E2 /* main.m in Sources */,

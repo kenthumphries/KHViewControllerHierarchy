@@ -10,30 +10,7 @@
 
 @implementation KHViewControllerHierarchyUtilities
 
-+ (void)showAlertViewWithHierarchyForVisibleViewControllerOfWindow:(UIWindow*)window
-                                             withCustomHierarchies:(KHViewControllerHierarchyCustomiser*)customiser
-{
-    // Determine the top of the ViewController hierarchy
-    NSMutableString *pathString = [NSMutableString new];
-    UIViewController *visibleViewController = [self ascendStackForViewController:window.rootViewController withPathString:pathString withCustomHierarchies:customiser];
-    
-    NSString *viewControllerHierarchy = [self objectHierarchyForViewController:visibleViewController withCustomHierarchies:customiser];
-    
-    [[[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Path to %s", object_getClassName(visibleViewController)]
-                                message:pathString
-                               delegate:nil
-                      cancelButtonTitle:@"OK"
-                      otherButtonTitles:nil] show];
-    
-    [[[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"%s", object_getClassName(visibleViewController)]
-                                message:viewControllerHierarchy
-                               delegate:nil
-                      cancelButtonTitle:@"OK"
-                      otherButtonTitles:nil] show];
-}
-
 + (NSString *)objectHierarchyForViewController:(UIViewController*)viewController
-                         withCustomHierarchies:(KHViewControllerHierarchyCustomiser*)customiser
 {
     NSString *classHierarchy = [viewController.class description];
     if (viewController.class != UIViewController.class)

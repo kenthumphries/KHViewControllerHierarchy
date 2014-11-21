@@ -15,14 +15,6 @@
 @interface KHViewControllerHierarchyUtilities : NSObject
 
 /**
-*  Show a view explaining the hiearchy of the current visible viewController
-*
-*  @param window UIWindow containing the current visible viewController
-*  @param customiser Customisation object used to extend functionality
-*/
-+ (void)showAlertViewWithHierarchyForVisibleViewControllerOfWindow:(UIWindow*)window
-                                             withCustomHierarchies:(KHViewControllerHierarchyCustomiser*)customiser;
-
 /**
  *  Return the object hierarchy of a given UIViewController up to (and including) UIViewController
  *  ie UINavigationController-> UIViewController
@@ -32,8 +24,7 @@
  *  @return NSString containing the object hierarchy of viewcontroller
  *  @param customiser Customisation object used to extend functionality
  */
-+ (NSString *)objectHierarchyForViewController:(UIViewController*)viewController
-                         withCustomHierarchies:(KHViewControllerHierarchyCustomiser*)customiser;
++ (NSString *)objectHierarchyForViewController:(UIViewController*)viewController;
 
 /**
  *  Find the 'top' of the stack on top of the viewController

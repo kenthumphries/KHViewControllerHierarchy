@@ -10,6 +10,7 @@
 #import "KHViewControllerHierarchyCustomiser.h"
 #import "KHViewControllerHierarchyUtilities.h"
 #import <objc/runtime.h>
+#import "KHViewControllerHierarchyView.h"
 
 static int const kHierarchyWindowDiameter = 100;
 
@@ -57,7 +58,7 @@ static NSString *const kHierarchyWindowOriginYKey = @"hierarchyWindowOriginY";
         hierarchyWindow.windowLevel = self.windowLevel + 1;
         hierarchyWindow.backgroundColor = [UIColor lightGrayColor];
         hierarchyWindow.alpha = 0.2;
-        hierarchyWindow.rootViewController = [UIViewController new]; // Avoid compiler warning - a window _should_ have a rootViewController
+        hierarchyWindow.rootViewController = nil; // Avoid compiler warning - a window _should_ have a rootViewController
         
         UIGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showHierarchyView:)];
         [hierarchyWindow addGestureRecognizer:tapRecognizer];
@@ -87,7 +88,16 @@ static NSString *const kHierarchyWindowOriginYKey = @"hierarchyWindowOriginY";
 - (void)setViewControllerHierarchyButtonEnabled:(BOOL)buttonEnabled
 {
     // Simply show or hide the hierarchyWindow. It's lazily loaded, so will be added if not already.
-    self.hierarchyWindow.hidden = !buttonEnabled;
+    if (buttonEnabled)
+    {
+        [self.hierarchyWindow makeKeyAndVisible];
+    }
+    else
+    {
+        self.hierarchyWindow.hidden = YES;
+        [self makeKeyWindow];
+    }
+//    self.hierarchyWindow.hidden = !buttonEnabled;
 }
 
 - (BOOL)viewControllerHierarchyButtonEnabled
@@ -133,8 +143,6 @@ static NSString *const kHierarchyWindowOriginYKey = @"hierarchyWindowOriginY";
         NSMutableString *pathString = [NSMutableString new];
         UIViewController *visibleViewController = [KHViewControllerHierarchyUtilities ascendStackForViewController:self.rootViewController withPathString:pathString withCustomHierarchies:self.viewControllerHierarchyCustomiser];
         
-        NSString *viewControllerHierarchy = [KHViewControllerHierarchyUtilities objectHierarchyForViewController:visibleViewController withCustomHierarchies:self.viewControllerHierarchyCustomiser];
-        
         [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
             hierarchyWindow.frame  = CGRectMake(20,
                                                 20,
@@ -153,32 +161,17 @@ static NSString *const kHierarchyWindowOriginYKey = @"hierarchyWindowOriginY";
                                           28,
                                           hierarchyWindow.frame.size.width - 40,
                                           hierarchyWindow.frame.size.height - 40);
-            
-            // Label containing Hierarchy subclass info
-            UILabel *hierarchyLabel = [UILabel new];
 
-            NSString *title = [NSString stringWithFormat:@"Hierarchy of %@\n", visibleViewController.class.description];
-            UIFont *font = [UIFont boldSystemFontOfSize:hierarchyLabel.font.pointSize];
-            NSDictionary *attrsDictionary = @{NSFontAttributeName : font};
-
-            NSMutableAttributedString *hierarchyText = [[NSMutableAttributedString alloc] initWithString:title
-                                                                                              attributes:attrsDictionary];
-            
-            font = [UIFont systemFontOfSize:hierarchyLabel.font.pointSize];
-            attrsDictionary = @{NSFontAttributeName : font};
-            [hierarchyText appendAttributedString:[[NSMutableAttributedString alloc] initWithString:viewControllerHierarchy
-                                                                                         attributes:attrsDictionary]];
-            
-            hierarchyLabel.numberOfLines  = 0;
-            hierarchyLabel.attributedText = hierarchyText;
-            hierarchyLabel.translatesAutoresizingMaskIntoConstraints = NO;
+            // View containing hierarchy info
+            KHViewControllerHierarchyView *hierarchyView = [KHViewControllerHierarchyView hierarchyViewForViewController:visibleViewController];
+            hierarchyView.translatesAutoresizingMaskIntoConstraints = NO;
             
             // Label containing path info
             UILabel *pathLabel = [UILabel new];
             
-            title = [NSString stringWithFormat:@"Path to %@\n", visibleViewController.class.description];
-            font = [UIFont boldSystemFontOfSize:pathLabel.font.pointSize];
-            attrsDictionary = @{NSFontAttributeName : font};
+            NSString *title = [NSString stringWithFormat:@"Path to %@\n", visibleViewController.class.description];
+            UIFont *font = [UIFont boldSystemFontOfSize:pathLabel.font.pointSize];
+            NSDictionary *attrsDictionary = @{NSFontAttributeName : font};
             
             NSMutableAttributedString *pathText = [[NSMutableAttributedString alloc] initWithString:title
                                                                                               attributes:attrsDictionary];
@@ -192,17 +185,17 @@ static NSString *const kHierarchyWindowOriginYKey = @"hierarchyWindowOriginY";
             pathLabel.attributedText = pathText;
             pathLabel.translatesAutoresizingMaskIntoConstraints = NO;
             
-            [scrollView addSubview:hierarchyLabel];
+            [scrollView addSubview:hierarchyView];
             [scrollView addSubview:pathLabel];
             
-            NSDictionary *views   = NSDictionaryOfVariableBindings(hierarchyLabel, pathLabel);
+            NSDictionary *views   = NSDictionaryOfVariableBindings(hierarchyView, pathLabel);
             NSDictionary *metrics = @{@"maxWidth" : @(scrollView.frame.size.width)};
 
-            [scrollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[hierarchyLabel(<=maxWidth)]|"
+            [scrollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[hierarchyView(<=maxWidth)]|"
                                                                                     options:0
                                                                                     metrics:metrics
                                                                                       views:views]];
-            [scrollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[hierarchyLabel]-40-[pathLabel]|"
+            [scrollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[hierarchyView]-40-[pathLabel]|"
                                                                                     options:NSLayoutFormatAlignAllLeft | NSLayoutFormatAlignAllRight
                                                                                     metrics:nil
                                                                                       views:views]];
@@ -244,9 +237,7 @@ static NSString *const kHierarchyWindowOriginYKey = @"hierarchyWindowOriginY";
         }];
         
         self.expanded = NO;
-    }
-    
-//    [KHViewControllerHierarchyUtilities showAlertViewWithHierarchyForVisibleViewControllerOfWindow:self withCustomHierarchies:self.viewControllerHierarchyCustomiser];
+    }    
 }
 
 @end
