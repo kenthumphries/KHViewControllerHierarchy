@@ -1,6 +1,6 @@
 //
 //  MyPageViewController.m
-//  KHViewControllerHierarchy
+//  KHVCInfo
 //
 //  Created by Kent Humphries on 13/11/2014.
 //  Copyright (c) 2014 Kent Humphries. All rights reserved.

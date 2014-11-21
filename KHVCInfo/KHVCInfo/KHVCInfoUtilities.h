@@ -1,18 +1,18 @@
 //
-//  KHViewControllerHierarchyUtilities.h
-//  KHViewControllerHierarchyUtilities
+//  KHVCInfoUtilities.h
+//  KHVCInfoUtilities
 //
 //  Created by Kent Humphries on 4/11/2014.
 //  Copyright (c) 2014 Kent Humphries. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
-#import "KHViewControllerHierarchyCustomiser.h"
+#import "KHVCInfoCustomiser.h"
 
 /**
  *  Utility object containing methods for determinining the current view hierarchy
  */
-@interface KHViewControllerHierarchyUtilities : NSObject
+@interface KHVCInfoUtilities : NSObject
 
 /**
  *  Return the object hierarchy of a given UIViewController up to (and including) UIViewController
@@ -37,6 +37,6 @@
  */
 + (UIViewController *)ascendStackForViewController:(UIViewController *)viewController
                                     withPathString:(NSMutableString *)pathString
-                             withCustomHierarchies:(KHViewControllerHierarchyCustomiser*)customiser;
+                             withCustomHierarchies:(KHVCInfoCustomiser*)customiser;
 
 @end

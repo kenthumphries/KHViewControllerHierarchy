@@ -1,16 +1,16 @@
 //
-//  UIWindow+KHViewControllerHierarchy.m
-//  KHViewControllerHierarchy
+//  UIWindow+KHVCInfo.m
+//  KHVCInfo
 //
 //  Created by Kent Humphries on 4/11/2014.
 //  Copyright (c) 2014 Kent Humphries. All rights reserved.
 //
 
-#import "UIWindow+KHViewControllerHierarchy.h"
-#import "KHViewControllerHierarchyCustomiser.h"
-#import "KHViewControllerHierarchyUtilities.h"
+#import "UIWindow+KHVCInfo.h"
+#import "KHVCInfoCustomiser.h"
+#import "KHVCInfoUtilities.h"
 #import <objc/runtime.h>
-#import "KHViewControllerHierarchyView.h"
+#import "KHVCInfoView.h"
 
 static int const kHierarchyWindowDiameter = 100;
 
@@ -20,7 +20,7 @@ static NSString *const kHierarchyWindowKey        = @"hierarchyWindow";
 static NSString *const kHierarchyWindowOriginXKey = @"hierarchyWindowOriginX";
 static NSString *const kHierarchyWindowOriginYKey = @"hierarchyWindowOriginY";
 
-@implementation UIWindow (KHViewControllerHierarchy)
+@implementation UIWindow (KHVCInfo)
 
 - (BOOL)expanded
 {
@@ -32,12 +32,12 @@ static NSString *const kHierarchyWindowOriginYKey = @"hierarchyWindowOriginY";
     objc_setAssociatedObject(self, (__bridge const void *)(kExpandedKey), @(expanded), OBJC_ASSOCIATION_ASSIGN);
 }
 
-- (KHViewControllerHierarchyCustomiser*)viewControllerHierarchyCustomiser
+- (KHVCInfoCustomiser*)viewControllerHierarchyCustomiser
 {
-    KHViewControllerHierarchyCustomiser *customiser = objc_getAssociatedObject(self, (__bridge const void *)(kCustomiserKey));
+    KHVCInfoCustomiser *customiser = objc_getAssociatedObject(self, (__bridge const void *)(kCustomiserKey));
     if (!customiser)
     {
-        customiser = [KHViewControllerHierarchyCustomiser new];
+        customiser = [KHVCInfoCustomiser new];
         objc_setAssociatedObject(self, (__bridge const void *)(kCustomiserKey), customiser, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
     return customiser;
@@ -141,7 +141,7 @@ static NSString *const kHierarchyWindowOriginYKey = @"hierarchyWindowOriginY";
     {
         // Determine the top of the ViewController hierarchy & it's path
         NSMutableString *pathString = [NSMutableString new];
-        UIViewController *visibleViewController = [KHViewControllerHierarchyUtilities ascendStackForViewController:self.rootViewController withPathString:pathString withCustomHierarchies:self.viewControllerHierarchyCustomiser];
+        UIViewController *visibleViewController = [KHVCInfoUtilities ascendStackForViewController:self.rootViewController withPathString:pathString withCustomHierarchies:self.viewControllerHierarchyCustomiser];
         
         [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
             hierarchyWindow.frame  = CGRectMake(20,
@@ -163,7 +163,7 @@ static NSString *const kHierarchyWindowOriginYKey = @"hierarchyWindowOriginY";
                                           hierarchyWindow.frame.size.height - 40);
 
             // View containing hierarchy info
-            KHViewControllerHierarchyView *hierarchyView = [KHViewControllerHierarchyView hierarchyViewForViewController:visibleViewController];
+            KHVCInfoView *hierarchyView = [KHVCInfoView hierarchyViewForViewController:visibleViewController];
             hierarchyView.translatesAutoresizingMaskIntoConstraints = NO;
             
             // Label containing path info

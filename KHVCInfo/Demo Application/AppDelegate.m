@@ -1,13 +1,13 @@
 //
 //  AppDelegate.m
-//  KHViewControllerHierarchy
+//  KHVCInfo
 //
 //  Created by Kent Humphries on 4/11/2014.
 //  Copyright (c) 2014 Kent Humphries. All rights reserved.
 //
 
 #import "AppDelegate.h"
-#import "UIWindow+KHViewControllerHierarchy.h"
+#import "UIWindow+KHVCInfo.h"
 
 @implementation AppDelegate
 

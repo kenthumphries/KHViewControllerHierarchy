@@ -1,14 +1,14 @@
 //
-//  KHViewControllerHierarchyCustomiser.m
-//  KHViewControllerHierarchy
+//  KHVCInfoCustomiser.m
+//  KHVCInfo
 //
 //  Created by Kent Humphries on 4/11/2014.
 //  Copyright (c) 2014 Kent Humphries. All rights reserved.
 //
 
-#import "KHViewControllerHierarchyCustomiser.h"
+#import "KHVCInfoCustomiser.h"
 
-@interface KHViewControllerHierarchyCustomiser ()
+@interface KHVCInfoCustomiser ()
 
 @property (nonatomic, strong) NSMutableDictionary *customBlocks;
 
@@ -16,7 +16,7 @@
 
 @end
 
-@implementation KHViewControllerHierarchyCustomiser
+@implementation KHVCInfoCustomiser
 
 -(NSMutableDictionary*)customBlocks
 {
@@ -35,7 +35,7 @@
     }
     return _registeredClasses;}
 
--(void) registerClass:(Class)class withAscendStackBlock:(KHViewControllerHierarchyAscendStackBlock)ascendStack
+-(void) registerClass:(Class)class withAscendStackBlock:(KHVCInfoAscendStackBlock)ascendStack
 {
     if (class && ascendStack)
     {
@@ -55,7 +55,7 @@
     [self.registeredClasses removeObject:class];
 }
 
--(KHViewControllerHierarchyAscendStackBlock)ascendStackBlockForClass:(Class)viewControllerClass
+-(KHVCInfoAscendStackBlock)ascendStackBlockForClass:(Class)viewControllerClass
 {
     // Iterate through registeredClasses in order to ensure any subclasses are chosen first
     for (Class registeredClass in self.registeredClasses)

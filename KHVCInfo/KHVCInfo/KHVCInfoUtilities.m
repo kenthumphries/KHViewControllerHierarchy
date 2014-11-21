@@ -1,14 +1,14 @@
 //
-//  KHViewControllerHierarchyUtilities.m
-//  KHViewControllerHierarchy
+//  KHVCInfoUtilities.m
+//  KHVCInfo
 //
 //  Created by Kent Humphries on 4/11/2014.
 //  Copyright (c) 2014 Kent Humphries. All rights reserved.
 //
 
-#import "KHViewControllerHierarchyUtilities.h"
+#import "KHVCInfoUtilities.h"
 
-@implementation KHViewControllerHierarchyUtilities
+@implementation KHVCInfoUtilities
 
 + (NSString *)objectHierarchyForViewController:(UIViewController*)viewController
 {
@@ -31,7 +31,7 @@
 
 + (UIViewController *)ascendStackForViewController:(UIViewController *)viewController
                                     withPathString:(NSMutableString *)pathString
-                             withCustomHierarchies:(KHViewControllerHierarchyCustomiser*)customiser
+                             withCustomHierarchies:(KHVCInfoCustomiser*)customiser
 {
     if (!pathString.length)
     {
@@ -40,7 +40,7 @@
     
     UIViewController *topOfStack = viewController;
 
-    KHViewControllerHierarchyAscendStackBlock customBlock = [customiser ascendStackBlockForClass:viewController.class];
+    KHVCInfoAscendStackBlock customBlock = [customiser ascendStackBlockForClass:viewController.class];
     if (customBlock)
     {
         topOfStack = customBlock(viewController, pathString);

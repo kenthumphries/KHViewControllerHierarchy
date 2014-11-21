@@ -1,6 +1,6 @@
 //
-//  KHViewControllerHierarchyCustomiser.h
-//  KHViewControllerHierarchy
+//  KHVCInfoCustomiser.h
+//  KHVCInfo
 //
 //  Created by Kent Humphries on 4/11/2014.
 //  Copyright (c) 2014 Kent Humphries. All rights reserved.
@@ -16,12 +16,12 @@
  *
  *  @return UIViewController at 'top' of viewController's direct hierarchy
  */
-typedef UIViewController *(^KHViewControllerHierarchyAscendStackBlock)(UIViewController *viewController, NSMutableString *pathString);
+typedef UIViewController *(^KHVCInfoAscendStackBlock)(UIViewController *viewController, NSMutableString *pathString);
 
 /**
- *  Configuration class used to customise actions in KHViewControllerHierarchyUtilities
+ *  Configuration class used to customise actions in KHVCInfoUtilities
  */
-@interface KHViewControllerHierarchyCustomiser : NSObject
+@interface KHVCInfoCustomiser : NSObject
 
 /**
  *  Register a Class such that any instance of this class (or it's subclasses) will use the associated block to find it's 'top' UIViewController.
@@ -30,7 +30,7 @@ typedef UIViewController *(^KHViewControllerHierarchyAscendStackBlock)(UIViewCon
  *  @param class       Class to find 'top' UIViewController for
  *  @param ascendStack Block that finds 'top' UIViewController for a given class
  */
--(void) registerClass:(Class)class withAscendStackBlock:(KHViewControllerHierarchyAscendStackBlock)ascendStack;
+-(void) registerClass:(Class)class withAscendStackBlock:(KHVCInfoAscendStackBlock)ascendStack;
 
 /**
  *  Deregister a Class so that default method is used to find 'top' UIViewController for this class (and it's subclasses)
@@ -40,12 +40,12 @@ typedef UIViewController *(^KHViewControllerHierarchyAscendStackBlock)(UIViewCon
 -(void) deregisterClass:(Class)class;
 
 /**
- *  Return the KHViewControllerHierarchyAscendStackBlock registered for a given class
+ *  Return the KHVCInfoAscendStackBlock registered for a given class
  *
  *  @param class Class to find the ascendStackBlock for
  *
- *  @return KHViewControllerHierarchyAscendStackBlock that returns the 'top' UIViewController for a given viewController
+ *  @return KHVCInfoAscendStackBlock that returns the 'top' UIViewController for a given viewController
  */
--(KHViewControllerHierarchyAscendStackBlock)ascendStackBlockForClass:(Class)class;
+-(KHVCInfoAscendStackBlock)ascendStackBlockForClass:(Class)class;
 
 @end

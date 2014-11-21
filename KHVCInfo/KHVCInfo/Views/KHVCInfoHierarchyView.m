@@ -1,15 +1,15 @@
 //
-//  KHViewControllerHierarchyView.m
-//  KHViewControllerHierarchy
+//  KHVCInfoHierarchyView.m
+//  KHVCInfo
 //
 //  Created by Kent Humphries on 21/11/2014.
 //  Copyright (c) 2014 Kent Humphries. All rights reserved.
 //
 
-#import "KHViewControllerHierarchyView.h"
-#import "KHViewControllerHierarchyUtilities.h"
+#import "KHVCInfoHierarchyView.h"
+#import "KHVCInfoUtilities.h"
 
-@interface KHViewControllerHierarchyView ()
+@interface KHVCInfoHierarchyView ()
 
 @property (strong, nonatomic) UILabel *label;
 
@@ -17,13 +17,13 @@
 
 @end
 
-@implementation KHViewControllerHierarchyView
+@implementation KHVCInfoHierarchyView
 
 + (instancetype)hierarchyViewForViewController:(UIViewController*)viewController
 {
-    NSString *hierarchy = [KHViewControllerHierarchyUtilities objectHierarchyForViewController:viewController];
+    NSString *hierarchy = [KHVCInfoUtilities objectHierarchyForViewController:viewController];
     
-    return [[KHViewControllerHierarchyView alloc] initWithHierarchy:hierarchy];
+    return [[KHVCInfoHierarchyView alloc] initWithHierarchy:hierarchy];
 }
 
 - (instancetype)initWithHierarchy:(NSString *)hierarchy

@@ -1,6 +1,6 @@
 //
-//  KHViewControllerHierarchyCustomiserTests.m
-//  KHViewControllerHierarchy
+//  KHVCInfoCustomiserTests.m
+//  KHVCInfo
 //
 //  Created by Kent Humphries on 12/11/2014.
 //  Copyright (c) 2014 Kent Humphries. All rights reserved.
@@ -10,16 +10,16 @@
 #import <XCTest/XCTest.h>
 #import "MySubViewController.h"
 #import "MySubSubViewController.h"
-#import "KHViewControllerHierarchyCustomiser.h"
+#import "KHVCInfoCustomiser.h"
 
-@interface KHViewControllerHierarchyCustomiserTests : XCTestCase
+@interface KHVCInfoCustomiserTests : XCTestCase
 
 @end
 
-@implementation KHViewControllerHierarchyCustomiserTests
+@implementation KHVCInfoCustomiserTests
 
 - (void)testRegisterDeregisterClass {
-    KHViewControllerHierarchyCustomiser *customiser = [KHViewControllerHierarchyCustomiser new];
+    KHVCInfoCustomiser *customiser = [KHVCInfoCustomiser new];
     
     // Should get back a nil block - haven't yet registered a class
     XCTAssertNil([customiser ascendStackBlockForClass:MySubViewController.class]);
@@ -46,12 +46,12 @@
     
     // 1) Register superclass and ensure it's block is returned
     
-    KHViewControllerHierarchyCustomiser *customiser = [KHViewControllerHierarchyCustomiser new];
+    KHVCInfoCustomiser *customiser = [KHVCInfoCustomiser new];
     
-    KHViewControllerHierarchyAscendStackBlock mySubViewControllerBlock = ^UIViewController *(UIViewController *viewController, NSMutableString *pathString) {
+    KHVCInfoAscendStackBlock mySubViewControllerBlock = ^UIViewController *(UIViewController *viewController, NSMutableString *pathString) {
         return [MySubViewController new];
     };
-    KHViewControllerHierarchyAscendStackBlock mySubSubViewControllerBlock = ^UIViewController *(UIViewController *viewController, NSMutableString *pathString) {
+    KHVCInfoAscendStackBlock mySubSubViewControllerBlock = ^UIViewController *(UIViewController *viewController, NSMutableString *pathString) {
         return [MySubSubViewController new];
     };
 
@@ -99,12 +99,12 @@
 {
     // 1) Register superclass before subclass and ensure superclass block is returned for sub & superclass
     
-    KHViewControllerHierarchyCustomiser *customiser = [KHViewControllerHierarchyCustomiser new];
+    KHVCInfoCustomiser *customiser = [KHVCInfoCustomiser new];
     
-    KHViewControllerHierarchyAscendStackBlock mySubViewControllerBlock = ^UIViewController *(UIViewController *viewController, NSMutableString *pathString) {
+    KHVCInfoAscendStackBlock mySubViewControllerBlock = ^UIViewController *(UIViewController *viewController, NSMutableString *pathString) {
         return [MySubViewController new];
     };
-    KHViewControllerHierarchyAscendStackBlock mySubSubViewControllerBlock = ^UIViewController *(UIViewController *viewController, NSMutableString *pathString) {
+    KHVCInfoAscendStackBlock mySubSubViewControllerBlock = ^UIViewController *(UIViewController *viewController, NSMutableString *pathString) {
         return [MySubSubViewController new];
     };
     
