@@ -86,7 +86,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		3719F4641A09861800C1A8E2 /* KHViewControllerHierarchy */ = {
+		3719F4641A09861800C1A8E2 /* KHVCInfo */ = {
 			isa = PBXGroup;
 			children = (
 				3719F4651A09861800C1A8E2 /* UIWindow+KHViewControllerHierarchy.h */,
@@ -97,7 +97,7 @@
 				37DA8C511A14249700E490FB /* KHViewControllerHierarchyCustomiser.m */,
 				37D86A9F1A1F68C0007C2EF6 /* Views */,
 			);
-			path = KHViewControllerHierarchy;
+			path = KHVCInfo;
 			sourceTree = "<group>";
 		};
 		3719F46B1A09974F00C1A8E2 /* Demo Application */ = {
@@ -118,7 +118,7 @@
 		37D4DE331A09564A00E201F4 = {
 			isa = PBXGroup;
 			children = (
-				37D4DE3E1A09564A00E201F4 /* KHViewControllerHierarchy */,
+				37D4DE3E1A09564A00E201F4 /* KHVCInfo */,
 				37D4DE581A09564A00E201F4 /* KHViewControllerHierarchyTests */,
 				37D4DE3D1A09564A00E201F4 /* Products */,
 			);
@@ -133,18 +133,18 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		37D4DE3E1A09564A00E201F4 /* KHViewControllerHierarchy */ = {
+		37D4DE3E1A09564A00E201F4 /* KHVCInfo */ = {
 			isa = PBXGroup;
 			children = (
 				3719F4771A09979300C1A8E2 /* main.m */,
 				3719F46B1A09974F00C1A8E2 /* Demo Application */,
-				3719F4641A09861800C1A8E2 /* KHViewControllerHierarchy */,
+				3719F4641A09861800C1A8E2 /* KHVCInfo */,
 				37D4DE491A09564A00E201F4 /* Main.storyboard */,
 				37D4DE4C1A09564A00E201F4 /* Images.xcassets */,
 				37D4DE4E1A09564A00E201F4 /* LaunchScreen.xib */,
 				37D4DE3F1A09564A00E201F4 /* Supporting Files */,
 			);
-			path = KHViewControllerHierarchy;
+			path = KHVCInfo;
 			sourceTree = "<group>";
 		};
 		37D4DE3F1A09564A00E201F4 /* Supporting Files */ = {
@@ -163,7 +163,8 @@
 				37DA8C591A14285200E490FB /* KHViewControllerHierarchyCustomiserTests.m */,
 				37D4DE591A09564A00E201F4 /* Supporting Files */,
 			);
-			path = KHViewControllerHierarchyTests;
+			name = KHViewControllerHierarchyTests;
+			path = KHVCInfoTests;
 			sourceTree = "<group>";
 		};
 		37D4DE591A09564A00E201F4 /* Supporting Files */ = {
@@ -421,7 +422,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				INFOPLIST_FILE = KHViewControllerHierarchy/Info.plist;
+				INFOPLIST_FILE = KHVCInfo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = KHVCInfo;
 			};
@@ -431,7 +432,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				INFOPLIST_FILE = KHViewControllerHierarchy/Info.plist;
+				INFOPLIST_FILE = KHVCInfo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = KHVCInfo;
 			};
@@ -449,7 +450,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = KHViewControllerHierarchyTests/Info.plist;
+				INFOPLIST_FILE = KHVCInfoTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = KHVCInfoTests;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KHVCInfo.app/KHVCInfo";
@@ -464,7 +465,7 @@
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = KHViewControllerHierarchyTests/Info.plist;
+				INFOPLIST_FILE = KHVCInfoTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = KHVCInfoTests;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KHVCInfo.app/KHVCInfo";
