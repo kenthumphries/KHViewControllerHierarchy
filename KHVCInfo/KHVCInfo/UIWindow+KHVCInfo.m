@@ -10,7 +10,7 @@
 #import "KHVCInfoCustomiser.h"
 #import "KHVCInfoUtilities.h"
 #import <objc/runtime.h>
-#import "KHVCInfoView.h"
+#import "KHVCInfoHierarchyView.h"
 
 static int const kHierarchyWindowDiameter = 100;
 
@@ -163,7 +163,7 @@ static NSString *const kHierarchyWindowOriginYKey = @"hierarchyWindowOriginY";
                                           hierarchyWindow.frame.size.height - 40);
 
             // View containing hierarchy info
-            KHVCInfoView *hierarchyView = [KHVCInfoView hierarchyViewForViewController:visibleViewController];
+            KHVCInfoHierarchyView *hierarchyView = [KHVCInfoHierarchyView hierarchyViewForViewController:visibleViewController];
             hierarchyView.translatesAutoresizingMaskIntoConstraints = NO;
             
             // Label containing path info
