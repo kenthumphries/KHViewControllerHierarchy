@@ -15,7 +15,6 @@
 @interface KHViewControllerHierarchyUtilities : NSObject
 
 /**
-/**
  *  Return the object hierarchy of a given UIViewController up to (and including) UIViewController
  *  ie UINavigationController-> UIViewController
  *
