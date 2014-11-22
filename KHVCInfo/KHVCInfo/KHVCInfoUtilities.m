@@ -7,6 +7,7 @@
 //
 
 #import "KHVCInfoUtilities.h"
+#import "KHVCInfoPathItem.h"
 
 @implementation KHVCInfoUtilities
 
@@ -30,12 +31,14 @@
 }
 
 + (UIViewController *)ascendStackForViewController:(UIViewController *)viewController
-                                    withPathString:(NSMutableString *)pathString
+                                          withPath:(NSMutableArray *)path
                                 withPathCustomiser:(KHVCInfoPathCustomiser*)customiser
 {
-    if (!pathString.length)
+    if (!path.count)
     {
-        [pathString appendFormat:@"UIWindow (has rootViewController) %@",viewController.class.description];
+        KHVCInfoPathItem *item = [[KHVCInfoPathItem alloc] initWithName:@"UIWindow"
+                                                   nextItemRelationship:@"has rootViewController"];
+        [path addObject:item];
     }
     
     UIViewController *topOfStack = viewController;
@@ -43,71 +46,81 @@
     KHVCInfoAscendStackBlock customBlock = [customiser ascendStackBlockForClass:viewController.class];
     if (customBlock)
     {
-        topOfStack = customBlock(viewController, pathString);
+        topOfStack = customBlock(viewController, path);
     }
     else if ([viewController isKindOfClass:UINavigationController.class])
     {
-        topOfStack = [self ascendStackForNavigationController:(UINavigationController*)viewController withPathString:pathString];
+        topOfStack = [self ascendStackForNavigationController:(UINavigationController*)viewController withPath:path];
     }
     else if ([viewController isKindOfClass:UITabBarController.class])
     {
-        topOfStack = [self ascendStackForTabBarController:(UITabBarController*)viewController withPathString:pathString];
+        topOfStack = [self ascendStackForTabBarController:(UITabBarController*)viewController withPath:path];
     }
     else if ([viewController isKindOfClass:UIPageViewController.class])
     {
-        topOfStack = [self ascendStackForPageViewController:(UIPageViewController*)viewController withPathString:pathString];
+        topOfStack = [self ascendStackForPageViewController:(UIPageViewController*)viewController withPath:path];
     }
     else if ([viewController presentedViewController])
     {
-        UIViewController *topViewController = [viewController presentedViewController];
-        [pathString appendFormat:@" (presenting) %@", topViewController.class.description];
-        topOfStack = [self ascendStackForViewController:topViewController withPathString:pathString withPathCustomiser:customiser];
+        topOfStack = [self ascendStackForPresentingViewController:viewController withPath:path];
     }
     else if (viewController.childViewControllers.count)
     {
-        topOfStack = [self ascendStackForChildrenOfViewController:viewController withPathString:pathString];
+        topOfStack = [self ascendStackForChildrenOfViewController:viewController withPath:path];
     }
     
     if (topOfStack == viewController)
     {
+        KHVCInfoPathItem *item = [[KHVCInfoPathItem alloc] initWithName:viewController.class.description
+                                                   nextItemRelationship:nil];
+        [path addObject:item];
+
         return topOfStack;
     }
     
-    return [self ascendStackForViewController:topOfStack withPathString:pathString withPathCustomiser:customiser];
+    return [self ascendStackForViewController:topOfStack withPath:path withPathCustomiser:customiser];
 }
 
-+ (UIViewController*)ascendStackForNavigationController:(UINavigationController*)navigationController withPathString:(NSMutableString *)pathString
++ (UIViewController*)ascendStackForNavigationController:(UINavigationController*)navigationController withPath:(NSMutableArray *)path
 {
+    KHVCInfoPathItem *item = [[KHVCInfoPathItem alloc] initWithName:navigationController.class.description
+                                               nextItemRelationship:@"has topViewController"];
+    [path addObject:item];
+
     UIViewController *topViewController = [navigationController topViewController];
-    [pathString appendFormat:@" (has topViewController) %@", topViewController.class.description];
     return topViewController;
 }
 
-+ (UIViewController *)ascendStackForTabBarController:(UITabBarController*)tabBarController withPathString:(NSMutableString *)pathString
++ (UIViewController *)ascendStackForTabBarController:(UITabBarController*)tabBarController withPath:(NSMutableArray *)path
 {
+    KHVCInfoPathItem *item = [[KHVCInfoPathItem alloc] initWithName:tabBarController.class.description
+                                               nextItemRelationship:@"has selectedViewController"];
+    [path addObject:item];
+    
     UIViewController *topViewController = [tabBarController selectedViewController];
-    [pathString appendFormat:@" (has selectedViewController) %@", topViewController.class.description];
     return topViewController;
 }
 
-+ (UIViewController *)ascendStackForChildrenOfViewController:(UIViewController *)viewController withPathString:(NSMutableString *)pathString
++ (UIViewController *)ascendStackForChildrenOfViewController:(UIViewController *)viewController withPath:(NSMutableArray *)path
 {
     for (UIViewController *childViewController in viewController.childViewControllers)
     {
         if ([viewController.view.subviews containsObject:childViewController.view])
         {
-            [pathString appendFormat:@" (has visible childViewController) %@", childViewController.class.description];
+            KHVCInfoPathItem *item = [[KHVCInfoPathItem alloc] initWithName:viewController.class.description
+                                                       nextItemRelationship:@"has visible childViewController"];
+            [path addObject:item];
             return childViewController;
         }
         else if (childViewController.childViewControllers.count)
         {
-            return [self ascendStackForChildrenOfViewController:childViewController withPathString:pathString];
+            return [self ascendStackForChildrenOfViewController:childViewController withPath:path];
         }
     }
     return viewController;
 }
 
-+ (UIViewController *)ascendStackForPageViewController:(UIPageViewController *)pageViewController withPathString:(NSMutableString *)pathString
++ (UIViewController *)ascendStackForPageViewController:(UIPageViewController *)pageViewController withPath:(NSMutableArray *)path
 {
     UIViewController *topViewController = pageViewController.viewControllers[0]; // Default
     if ([pageViewController.dataSource respondsToSelector:@selector(presentationIndexForPageViewController:)])
@@ -119,8 +132,20 @@
         }
     }
     
-    [pathString appendFormat:@" (showing) %@", topViewController.class.description];
+    KHVCInfoPathItem *item = [[KHVCInfoPathItem alloc] initWithName:pageViewController.class.description
+                                               nextItemRelationship:@"showing"];
+    [path addObject:item];
     return topViewController;
+}
+
++ (UIViewController*)ascendStackForPresentingViewController:(UIViewController*)viewController
+                                                   withPath:(NSMutableArray*)path
+{
+    KHVCInfoPathItem *item = [[KHVCInfoPathItem alloc] initWithName:viewController.class.description
+                                               nextItemRelationship:@"presenting"];
+    [path addObject:item];
+    
+    return [viewController presentedViewController];
 }
 
 @end

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		370D12D91A20D58D00F3BA19 /* KHVCInfoPathItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 370D12D81A20D58D00F3BA19 /* KHVCInfoPathItem.m */; };
 		3719F4691A09861800C1A8E2 /* UIWindow+KHVCInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 3719F4661A09861800C1A8E2 /* UIWindow+KHVCInfo.m */; };
 		3719F46A1A09861800C1A8E2 /* KHVCInfoUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 3719F4681A09861800C1A8E2 /* KHVCInfoUtilities.m */; };
 		3719F4731A09974F00C1A8E2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3719F46D1A09974F00C1A8E2 /* AppDelegate.m */; };
@@ -39,6 +40,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		370D12D71A20D58D00F3BA19 /* KHVCInfoPathItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KHVCInfoPathItem.h; sourceTree = "<group>"; };
+		370D12D81A20D58D00F3BA19 /* KHVCInfoPathItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KHVCInfoPathItem.m; sourceTree = "<group>"; };
 		3719F4651A09861800C1A8E2 /* UIWindow+KHVCInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIWindow+KHVCInfo.h"; sourceTree = "<group>"; };
 		3719F4661A09861800C1A8E2 /* UIWindow+KHVCInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWindow+KHVCInfo.m"; sourceTree = "<group>"; };
 		3719F4671A09861800C1A8E2 /* KHVCInfoUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KHVCInfoUtilities.h; sourceTree = "<group>"; };
@@ -93,6 +96,8 @@
 				3719F4661A09861800C1A8E2 /* UIWindow+KHVCInfo.m */,
 				3719F4671A09861800C1A8E2 /* KHVCInfoUtilities.h */,
 				3719F4681A09861800C1A8E2 /* KHVCInfoUtilities.m */,
+				370D12D71A20D58D00F3BA19 /* KHVCInfoPathItem.h */,
+				370D12D81A20D58D00F3BA19 /* KHVCInfoPathItem.m */,
 				37DA8C501A14249700E490FB /* KHVCInfoPathCustomiser.h */,
 				37DA8C511A14249700E490FB /* KHVCInfoPathCustomiser.m */,
 				37D86A9F1A1F68C0007C2EF6 /* Views */,
@@ -285,6 +290,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3719F4691A09861800C1A8E2 /* UIWindow+KHVCInfo.m in Sources */,
+				370D12D91A20D58D00F3BA19 /* KHVCInfoPathItem.m in Sources */,
 				3719F46A1A09861800C1A8E2 /* KHVCInfoUtilities.m in Sources */,
 				37DA8C541A14249700E490FB /* KHVCInfoPathCustomiser.m in Sources */,
 				37DA8C5D1A142DA300E490FB /* MyPageViewController.m in Sources */,

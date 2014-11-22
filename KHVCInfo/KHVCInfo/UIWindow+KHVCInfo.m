@@ -140,8 +140,10 @@ static NSString *const kHierarchyWindowOriginYKey = @"hierarchyWindowOriginY";
     if (!self.expanded)
     {
         // Determine the top of the ViewController hierarchy & it's path
-        NSMutableString *pathString = [NSMutableString new];
-        UIViewController *visibleViewController = [KHVCInfoUtilities ascendStackForViewController:self.rootViewController withPathString:pathString withPathCustomiser:self.viewControllerHierarchyCustomiser];
+        NSMutableArray *path = [NSMutableArray new];
+        UIViewController *visibleViewController = [KHVCInfoUtilities ascendStackForViewController:self.rootViewController
+                                                                                         withPath:path
+                                                                               withPathCustomiser:self.viewControllerHierarchyCustomiser];
         
         [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
             hierarchyWindow.frame  = CGRectMake(20,
@@ -178,7 +180,7 @@ static NSString *const kHierarchyWindowOriginYKey = @"hierarchyWindowOriginY";
             
             font = [UIFont systemFontOfSize:pathLabel.font.pointSize];
             attrsDictionary = @{NSFontAttributeName : font};
-            [pathText appendAttributedString:[[NSMutableAttributedString alloc] initWithString:pathString
+            [pathText appendAttributedString:[[NSMutableAttributedString alloc] initWithString:path.description
                                                                                     attributes:attrsDictionary]];
 
             pathLabel.numberOfLines  = 0;

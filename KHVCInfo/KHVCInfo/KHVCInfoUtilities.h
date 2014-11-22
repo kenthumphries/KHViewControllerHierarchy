@@ -31,12 +31,12 @@
  *
  *  @param viewController UIViewController subclass to find the top-most view on top of its
  *
- *  @param pathString NSMutableString that must be pre-initialised and will be filled with the path stack
+ *  @param path NSMutableArray that must be pre-initialised and will be filled with the path stack
  *  @param customiser Customisation object used to extend functionality
  *  @return UIViewController that is at the top of the current UIViewController 'stack'
  */
 + (UIViewController *)ascendStackForViewController:(UIViewController *)viewController
-                                    withPathString:(NSMutableString *)pathString
+                                          withPath:(NSMutableArray *)path
                                 withPathCustomiser:(KHVCInfoPathCustomiser*)customiser;
 
 @end

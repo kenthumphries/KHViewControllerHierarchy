@@ -12,11 +12,11 @@
  *  Block that is given a UIViewController and returns it's 'top' UIViewController
  *
  *  @param viewController viewController to ascend to 'top'
- *  @param pathString NSMutableString which shows relation from viewController to 'top' UIViewController
+ *  @param path NSMutableArray which contains a path item for each viewController to 'top' UIViewController
  *
  *  @return UIViewController at 'top' of viewController's direct hierarchy
  */
-typedef UIViewController *(^KHVCInfoAscendStackBlock)(UIViewController *viewController, NSMutableString *pathString);
+typedef UIViewController *(^KHVCInfoAscendStackBlock)(UIViewController *viewController, NSMutableArray *path);
 
 /**
  *  Configuration class used to customise actions in KHVCInfoUtilities
